@@ -31,7 +31,7 @@ export default function Hero() {
 
           {/* Boutons d'action */}
           <div className="hero-buttons">
-            <Link href="/offres" className="primary-btn hero-btn">
+            <Link href="/produits" className="primary-btn hero-btn">
               <span>Découvrir les offres</span>
               <i className="fa-solid fa-arrow-right"></i>
             </Link>

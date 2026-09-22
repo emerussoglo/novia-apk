@@ -5,6 +5,7 @@ export type Product = {
   description: string;
   image: string;
   downloadFiles: string[];
+  driveUrl: string;
 };
 
 export const products: Product[] = [
@@ -16,6 +17,8 @@ export const products: Product[] = [
       "Les fonctionnalités premium de CapCut pour tes projets créatifs.",
     image: "/img/CapCut.apk",
     downloadFiles: ["/img/CapCut.apk", "/img/Spotify.apk"],
+    driveUrl:
+      "https://drive.google.com/drive/folders/1MD8f2kDp9nJ4VspnZGERwUoOycfiEmXR?usp=drive_link",
   },
   {
     id: "moviebox-pro",
@@ -25,6 +28,8 @@ export const products: Product[] = [
       "Une expérience premium pour enrichir ton environnement de création.",
     image: "/img/MovieBox.apk",
     downloadFiles: ["/img/MovieBox.apk", "/img/Spotify.apk"],
+    driveUrl:
+      "https://drive.google.com/drive/folders/1S18AM4YXLGwb36QjC7Bm7ERW2XVJ5Xnc?usp=drive_link",
   },
 ];
 

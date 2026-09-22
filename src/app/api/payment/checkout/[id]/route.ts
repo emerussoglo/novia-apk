@@ -27,6 +27,8 @@ export async function GET(
       verified: transaction?.status === "SUCCESS",
       transaction,
       items: session.metadata?.items ?? [],
+      customerEmail: session.customer_email ?? "",
+      customerName: session.customer_name ?? "Client",
     });
   } catch (error) {
     console.error("SasPay status error", error);

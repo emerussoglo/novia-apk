@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/CartProvider";
 
 const formatPrice = (amount: number) =>
@@ -15,6 +15,7 @@ export default function CartPage() {
   const [message, setMessage] = useState("");
   const [isPaying, setIsPaying] = useState(false);
   const [purchasedFiles, setPurchasedFiles] = useState<string[]>([]);
+  const emailSentRef = useRef(false);
 
   useEffect(() => {
     const pending = window.localStorage.getItem(PENDING_PAYMENT_KEY);
@@ -38,6 +39,19 @@ export default function CartPage() {
         setMessage("Vérification de ton paiement en cours...");
       }
       if (result.verified === true) {
+        let emailMessage = "Paiement confirmé. Tes fichiers sont prêts.";
+        if (!emailSentRef.current) {
+          emailSentRef.current = true;
+          const emailResponse = await fetch("/api/send-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sessionId: payment.sessionId }),
+          });
+          if (!emailResponse.ok) {
+            emailMessage =
+              "Paiement confirmé. Les fichiers sont prêts, mais l’e-mail n’a pas pu être envoyé.";
+          }
+        }
         const files = Array.from(
           new Set(
             (result.items as { productId: string }[]).flatMap(
@@ -48,7 +62,7 @@ export default function CartPage() {
         setPurchasedFiles(files);
         clear();
         window.localStorage.removeItem(PENDING_PAYMENT_KEY);
-        setMessage("Paiement confirmé. Tes fichiers sont prêts.");
+        setMessage(emailMessage);
         return;
       }
       if (result.status === "FAILED" || result.status === "EXPIRED") {
