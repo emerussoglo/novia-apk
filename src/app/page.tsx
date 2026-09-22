@@ -14,7 +14,7 @@ export default function Home() {
       <Hero />
       <FeaturesBar />
       <ProductsSection />
-      <BonusBanner />
+      <BonusBanner /> 
       <WorkflowSection />
       <ComparisonSection />
       <HowAndWhySection />
