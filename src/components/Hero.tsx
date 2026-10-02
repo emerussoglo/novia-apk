@@ -80,14 +80,14 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Badge flottant bas : Spotify Premium */}
+            {/* Badge flottant bas : bonus du pack */}
             <div className="floating-card bonus-card">
-              <div className="spotify-icon">
-                <i className="fa-brands fa-spotify"></i>
+              <div className="bonus-apps-icon">
+                <i className="fa-solid fa-gift"></i>
               </div>
               <div className="bonus-info">
-                <span className="bonus-label">Bonus inclus</span>
-                <span className="bonus-title">Spotify Premium</span>
+                <span className="bonus-label">Bonus avec les deux offres</span>
+                <span className="bonus-title">WPS Office + InShot</span>
               </div>
             </div>
           </div>

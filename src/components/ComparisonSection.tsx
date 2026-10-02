@@ -22,8 +22,8 @@ export default function ComparisonSection() {
     },
     {
       feature: "Prix",
-      capcut: "3 000 FCFA",
-      moviebox: "2 000 FCFA",
+      capcut: "1 000 FCFA",
+      moviebox: "1 000 FCFA",
     },
     {
       feature: "Activation",
@@ -32,8 +32,8 @@ export default function ComparisonSection() {
     },
     {
       feature: "Bonus",
-      capcut: "Spotify Premium",
-      moviebox: "Spotify Premium",
+      capcut: "Uniquement en pack : WPS Office + InShot",
+      moviebox: "Uniquement en pack : WPS Office + InShot",
     },
   ];
 
@@ -53,11 +53,11 @@ export default function ComparisonSection() {
             <div className="table-cell feature-cell"></div>
             <div className="table-cell product-cell capcut-header">
               <h3 className="product-title">CapCut Pro</h3>
-              <span className="product-price">3 000 FCFA</span>
+              <span className="product-price">1 000 FCFA</span>
             </div>
             <div className="table-cell product-cell moviebox-header">
               <h3 className="product-title">MovieBox Pro</h3>
-              <span className="product-price">2 000 FCFA</span>
+              <span className="product-price">1 000 FCFA</span>
             </div>
           </div>
 

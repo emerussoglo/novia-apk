@@ -4,34 +4,46 @@ export type Product = {
   price: number;
   description: string;
   image: string;
-  downloadFiles: string[];
-  driveUrl: string;
+  downloadFile: string;
 };
 
 export const products: Product[] = [
   {
     id: "capcut-pro",
     name: "CapCut Pro",
-    price: 3000,
+    price: 1000,
     description:
       "Les fonctionnalités premium de CapCut pour tes projets créatifs.",
-    image: "/img/CapCut.apk",
-    downloadFiles: ["/img/CapCut.apk", "/img/Spotify.apk"],
-    driveUrl:
-      "https://drive.google.com/drive/folders/1MD8f2kDp9nJ4VspnZGERwUoOycfiEmXR?usp=drive_link",
+    image: "/img/capcut.jpg",
+    downloadFile: "/img/capcut.txt",
   },
   {
     id: "moviebox-pro",
     name: "MovieBox Pro",
-    price: 2000,
+    price: 1000,
     description:
       "Une expérience premium pour enrichir ton environnement de création.",
-    image: "/img/MovieBox.apk",
-    downloadFiles: ["/img/MovieBox.apk", "/img/Spotify.apk"],
-    driveUrl:
-      "https://drive.google.com/drive/folders/1S18AM4YXLGwb36QjC7Bm7ERW2XVJ5Xnc?usp=drive_link",
+    image: "/img/moviebox.jpg",
+    downloadFile: "/img/moviebox.txt",
   },
 ];
+
+export const bundleBonuses = ["WPS Office", "InShot"] as const;
+
+export function getOrderDelivery(productIds: string[]) {
+  const hasCapCut = productIds.includes("capcut-pro");
+  const hasMovieBox = productIds.includes("moviebox-pro");
+  const isBundle = hasCapCut && hasMovieBox;
+
+  return {
+    files: isBundle
+      ? ["/img/pack.txt"]
+      : products
+          .filter((product) => productIds.includes(product.id))
+          .map((product) => product.downloadFile),
+    bonuses: isBundle ? [...bundleBonuses] : [],
+  };
+}
 
 export function getProduct(productId: string) {
   return products.find((product) => product.id === productId);

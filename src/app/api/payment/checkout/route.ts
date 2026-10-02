@@ -7,11 +7,16 @@ type RequestItem = { productId: string; quantity: number };
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const items = body.items as RequestItem[];
+    const items = body?.items as RequestItem[];
     const name = typeof body.name === "string" ? body.name.trim() : "";
     const email = typeof body.email === "string" ? body.email.trim() : "";
 
-    if (!Array.isArray(items) || items.length === 0 || !name || !email) {
+    if (
+      !Array.isArray(items) ||
+      items.length === 0 ||
+      !name ||
+      !/^\S+@\S+\.\S+$/.test(email)
+    ) {
       return NextResponse.json(
         { error: "Informations de commande invalides." },
         { status: 400 },
@@ -19,6 +24,8 @@ export async function POST(request: Request) {
     }
 
     const safeItems = items.map((item) => {
+      if (!item || typeof item.productId !== "string")
+        throw new Error("Produit ou quantité invalide.");
       const product = getProduct(item.productId);
       const quantity = Number.isInteger(item.quantity) ? item.quantity : 0;
       if (!product || quantity < 1 || quantity > 20)

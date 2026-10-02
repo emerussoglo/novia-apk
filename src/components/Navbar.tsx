@@ -59,7 +59,7 @@ export default function Navbar() {
               {count > 0 && <span className="cart-count">{count}</span>}
             </Link>
 
-            <Link href="/offres" className="primary-btn desktop-btn">
+            <Link href="/produits" className="primary-btn desktop-btn">
               <span>Voir les offres</span>
               <i className="fa-solid fa-arrow-right"></i>
             </Link>
@@ -108,7 +108,7 @@ export default function Navbar() {
 
         <div className="mobile-drawer-footer">
           <Link
-            href="/offres"
+            href="/produits"
             className="primary-btn block-btn"
             onClick={toggleMenu}
           >

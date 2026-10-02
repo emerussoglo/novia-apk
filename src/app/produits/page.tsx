@@ -25,13 +25,14 @@ export default function ProductsPage() {
       id: "capcut-pro",
       name: "CapCut Pro",
       badge: "POPULAIRE",
-      price: "3000",
+      price: "1000",
       period: "FCFA / à vie",
       deviceType: "Application mobile uniquement",
       description:
         "Une solution pensée pour les créateurs qui souhaitent disposer des fonctionnalités incluses dans leur offre premium et travailler plus efficacement sur leurs contenus vidéo.",
       image: "/img/capcut.jpg",
-      bonus: "Spotify Premium offert en bonus à chaque commande",
+      bonus:
+        "Aucun bonus pour cet achat seul. WPS Office et InShot sont offerts avec CapCut Pro + MovieBox Pro.",
       features: [
         "Accès complet aux effets et filtres Pro",
         "Exportation en qualité 4K / 60 FPS sans filigrane",
@@ -44,13 +45,14 @@ export default function ProductsPage() {
     {
       id: "moviebox-pro",
       name: "MovieBox Pro",
-      price: "2000",
+      price: "1000",
       period: "FCFA / à vie",
       deviceType: "Application mobile uniquement",
       description:
         "Une solution pour les créateurs qui souhaitent enrichir leur environnement de création vidéo avec les fonctionnalités incluses dans leur offre.",
       image: "/img/moviebox.jpg",
-      bonus: "Spotify Premium offert en bonus à chaque commande",
+      bonus:
+        "Aucun bonus pour cet achat seul. WPS Office et InShot sont offerts avec CapCut Pro + MovieBox Pro.",
       features: [
         "Catalogue complet de templates premium",
         "Outils de correction colorimétrique avancés",
@@ -72,8 +74,8 @@ export default function ProductsPage() {
           Commence à créer.
         </h1>
         <p className="products-subtitle">
-          Deux applications mobiles premium, avec Spotify Premium offert en
-          bonus à chaque commande.
+          CapCut Pro et MovieBox Pro à 1 000 FCFA chacun. WPS Office et InShot
+          sont offerts uniquement pour l&apos;achat des deux applications.
         </p>
       </div>
 

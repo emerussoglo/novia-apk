@@ -1,9 +1,5 @@
 export default function BonusBanner() {
-  const perks = [
-    "Musique sans publicité",
-    "Écoute hors connexion",
-    "Qualité audio premium",
-  ];
+  const perks = ["WPS Office", "InShot"];
 
   return (
     <section className="bonus-banner-section">
@@ -20,17 +16,16 @@ export default function BonusBanner() {
 
           {/* Titre principal */}
           <h2 className="bonus-title">
-            La créativité sonne mieux en <br className="desktop-only" />
-            <span className="bonus-highlight">Premium.</span>
+            Deux applications achetées,
+            <br className="desktop-only" />
+            <span className="bonus-highlight"> deux bonus offerts.</span>
           </h2>
 
-          {/* Sous-titre / Description */}
           <p className="bonus-description">
-            En bonus avec chaque commande : <strong>Spotify Premium</strong> pour
-            écouter ta musique sans coupures pendant que tu crées.
+            <strong>WPS Office et InShot</strong> sont offerts uniquement lorsque
+            tu achètes CapCut Pro et MovieBox Pro ensemble.
           </p>
 
-          {/* Liste des puces */}
           <ul className="bonus-list">
             {perks.map((perk, idx) => (
               <li key={idx}>

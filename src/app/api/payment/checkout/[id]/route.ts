@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getOrderDelivery, getProduct } from "@/lib/products";
 import { sasPayRequest } from "@/lib/saspay";
 
 export async function GET(
@@ -22,11 +23,41 @@ export async function GET(
       );
       transaction = verified?.data ?? verified;
     }
+    const verified = transaction?.status === "SUCCESS";
+    let delivery = { files: [] as string[], bonuses: [] as string[] };
+    if (verified) {
+      const sessionItems = session.metadata?.items;
+      if (!Array.isArray(sessionItems) || sessionItems.length === 0) {
+        return NextResponse.json(
+          { error: "Les produits de la commande sont invalides." },
+          { status: 502 },
+        );
+      }
+      const productIds: string[] = [];
+      for (const item of sessionItems) {
+        if (
+          !item ||
+          typeof item.productId !== "string" ||
+          !getProduct(item.productId) ||
+          !Number.isInteger(item.quantity) ||
+          item.quantity < 1 ||
+          item.quantity > 20
+        ) {
+          return NextResponse.json(
+            { error: "Les produits de la commande sont invalides." },
+            { status: 502 },
+          );
+        }
+        productIds.push(item.productId);
+      }
+      delivery = getOrderDelivery(productIds);
+    }
     return NextResponse.json({
       status: session.status,
-      verified: transaction?.status === "SUCCESS",
+      verified,
       transaction,
-      items: session.metadata?.items ?? [],
+      downloadFiles: delivery.files,
+      bonuses: delivery.bonuses,
       customerEmail: session.customer_email ?? "",
       customerName: session.customer_name ?? "Client",
     });

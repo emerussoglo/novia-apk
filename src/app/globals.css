@@ -726,10 +726,10 @@ ul {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-.spotify-icon {
+.bonus-apps-icon {
   width: 36px;
   height: 36px;
-  background: #22c55e;
+  background: #7c3aed;
   border-radius: 10px;
   display: flex;
   align-items: center;

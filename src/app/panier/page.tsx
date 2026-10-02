@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/CartProvider";
+import { getOrderDelivery } from "@/lib/products";
 
 const formatPrice = (amount: number) =>
   `${amount.toLocaleString("fr-FR")} FCFA`;
@@ -15,7 +16,11 @@ export default function CartPage() {
   const [message, setMessage] = useState("");
   const [isPaying, setIsPaying] = useState(false);
   const [purchasedFiles, setPurchasedFiles] = useState<string[]>([]);
+  const [purchasedBonuses, setPurchasedBonuses] = useState<string[]>([]);
   const emailSentRef = useRef(false);
+  const orderBonuses = getOrderDelivery(
+    items.map((item) => item.productId),
+  ).bonuses;
 
   useEffect(() => {
     const pending = window.localStorage.getItem(PENDING_PAYMENT_KEY);
@@ -27,50 +32,88 @@ export default function CartPage() {
       window.localStorage.removeItem(PENDING_PAYMENT_KEY);
       return;
     }
+    if (!/^[0-9a-f-]{36}$/i.test(payment.sessionId)) {
+      window.localStorage.removeItem(PENDING_PAYMENT_KEY);
+      return;
+    }
 
     let cancelled = false;
     const checkPayment = async () => {
-      const response = await fetch(
-        `/api/payment/checkout/${payment.sessionId}`,
-      );
-      const result = await response.json();
-      if (cancelled) return;
-      if (result.status === "PENDING") {
-        setMessage("Vérification de ton paiement en cours...");
-      }
-      if (result.verified === true) {
-        let emailMessage = "Paiement confirmé. Tes fichiers sont prêts.";
-        if (!emailSentRef.current) {
-          emailSentRef.current = true;
-          const emailResponse = await fetch("/api/send-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ sessionId: payment.sessionId }),
-          });
-          if (!emailResponse.ok) {
-            emailMessage =
-              "Paiement confirmé. Les fichiers sont prêts, mais l’e-mail n’a pas pu être envoyé.";
-          }
-        }
-        const files = Array.from(
-          new Set(
-            (result.items as { productId: string }[]).flatMap(
-              (item) => getItemProduct(item.productId)?.downloadFiles ?? [],
-            ),
-          ),
+      try {
+        const response = await fetch(
+          `/api/payment/checkout/${payment.sessionId}`,
         );
-        setPurchasedFiles(files);
-        clear();
-        window.localStorage.removeItem(PENDING_PAYMENT_KEY);
-        setMessage(emailMessage);
-        return;
+        const result = await response.json();
+        if (cancelled) return;
+        if (!response.ok) {
+          setMessage(
+            result.error ?? "Vérification du paiement impossible. Nouvelle tentative...",
+          );
+          window.setTimeout(checkPayment, 3000);
+          return;
+        }
+        if (result.status === "PENDING") {
+          setMessage("Vérification de ton paiement en cours...");
+        }
+        if (result.verified === true) {
+          const files = Array.isArray(result.downloadFiles)
+            ? result.downloadFiles.filter(
+                (file: unknown): file is string => typeof file === "string",
+              )
+            : [];
+          if (files.length === 0) {
+            setMessage(
+              "Paiement confirmé, mais les fichiers de cette commande sont indisponibles. Contacte l’assistance.",
+            );
+            return;
+          }
+
+          let emailMessage = "Paiement confirmé. Tes fichiers sont prêts.";
+          if (!emailSentRef.current) {
+            emailSentRef.current = true;
+            try {
+              const emailResponse = await fetch("/api/send-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sessionId: payment.sessionId }),
+              });
+              if (!emailResponse.ok) {
+                emailMessage =
+                  "Paiement confirmé. Les fichiers sont prêts, mais l’e-mail n’a pas pu être envoyé.";
+              }
+            } catch {
+              emailMessage =
+                "Paiement confirmé. Les fichiers sont prêts, mais l’e-mail n’a pas pu être envoyé.";
+            }
+          }
+          setPurchasedFiles(files);
+          setPurchasedBonuses(
+            Array.isArray(result.bonuses)
+              ? result.bonuses.filter(
+                  (bonus: unknown): bonus is string =>
+                    typeof bonus === "string",
+                )
+              : [],
+          );
+          clear();
+          window.localStorage.removeItem(PENDING_PAYMENT_KEY);
+          setMessage(emailMessage);
+          return;
+        }
+        if (result.status === "FAILED" || result.status === "EXPIRED") {
+          window.localStorage.removeItem(PENDING_PAYMENT_KEY);
+          setMessage("Le paiement n’a pas abouti. Tu peux réessayer.");
+          return;
+        }
+        window.setTimeout(checkPayment, 3000);
+      } catch {
+        if (!cancelled) {
+          setMessage(
+            "Vérification du paiement impossible. Nouvelle tentative...",
+          );
+          window.setTimeout(checkPayment, 3000);
+        }
       }
-      if (result.status === "FAILED" || result.status === "EXPIRED") {
-        window.localStorage.removeItem(PENDING_PAYMENT_KEY);
-        setMessage("Le paiement n’a pas abouti. Tu peux réessayer.");
-        return;
-      }
-      window.setTimeout(checkPayment, 3000);
     };
     void checkPayment();
     return () => {
@@ -132,7 +175,7 @@ export default function CartPage() {
           </h2>
           <p>
             {purchasedFiles.length
-              ? "Tes fichiers sont prêts à être téléchargés."
+              ? `Tes fichiers sont prêts à être téléchargés.${purchasedBonuses.length ? ` Bonus inclus : ${purchasedBonuses.join(" et ")}.` : ""}`
               : "Ajoute une offre pour commencer."}
           </p>
           {purchasedFiles.length ? (
@@ -154,6 +197,11 @@ export default function CartPage() {
         <div className="cart-layout">
           <section className="cart-items">
             <h2>Ta sélection</h2>
+            <p>
+              {orderBonuses.length
+                ? `Bonus du pack inclus : ${orderBonuses.join(" et ")}.`
+                : "WPS Office et InShot sont offerts uniquement pour l’achat des deux applications ensemble."}
+            </p>
             {items.map((item) => {
               const product = getItemProduct(item.productId);
               if (!product) return null;
@@ -164,7 +212,7 @@ export default function CartPage() {
                   </div>
                   <div className="cart-item-info">
                     <h3>{product.name}</h3>
-                    <p>{formatPrice(product.price)} · Spotify Premium offert</p>
+                    <p>{formatPrice(product.price)} · Offre à vie</p>
                   </div>
                   <div className="quantity-control">
                     <button
