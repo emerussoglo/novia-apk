@@ -125,7 +125,7 @@ export default function ProductsPage() {
                   Voir les détails
                 </button>
                 <BuyNowButton productId={product.id} className="btn-buy">
-                  Acheter
+                  Ajouter au panier
                 </BuyNowButton>
               </div>
             </div>

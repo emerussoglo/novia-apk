@@ -17,9 +17,14 @@ export default function Footer() {
             <p className="footer-brand-desc">
               Des outils premium pour créer, monter et développer tes contenus.
             </p>
-            <a className="footer-contact" href="tel:0157234689">
-              <i className="fa-solid fa-phone"></i> 01 57 23 46 89
-            </a>
+           <a
+  className="footer-contact"
+  href="https://wa.me/2290166935805"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <i className="fa-brands fa-whatsapp"></i> +229 01 66 93 58 05
+</a>
           </div>
 
           {/* Colonne 1 : Navigation */}
