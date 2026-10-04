@@ -30,7 +30,7 @@ export default function ProductsPage() {
       deviceType: "Application mobile uniquement",
       description:
         "Une solution pensée pour les créateurs qui souhaitent disposer des fonctionnalités incluses dans leur offre premium et travailler plus efficacement sur leurs contenus vidéo.",
-      image: "/img/capcut.jpg",
+      image: "/img/capcut.jpeg",
       bonus:
         "Aucun bonus pour cet achat seul. WPS Office et InShot sont offerts avec CapCut Pro + MovieBox Pro.",
       features: [
@@ -50,7 +50,7 @@ export default function ProductsPage() {
       deviceType: "Application mobile uniquement",
       description:
         "Une solution pour les créateurs qui souhaitent enrichir leur environnement de création vidéo avec les fonctionnalités incluses dans leur offre.",
-      image: "/img/moviebox.jpg",
+      image: "/img/moviebox.jpeg",
       bonus:
         "Aucun bonus pour cet achat seul. WPS Office et InShot sont offerts avec CapCut Pro + MovieBox Pro.",
       features: [
