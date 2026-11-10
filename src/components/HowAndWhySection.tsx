@@ -2,93 +2,88 @@ export default function HowAndWhySection() {
   const steps = [
     {
       number: "01",
-      title: "Choisis ton offre",
+      title: "Choisissez votre outil",
       description:
-        "Sélectionne le produit et la durée qui correspondent à tes besoins.",
+        "Sélectionnez CapCut Pro, MovieBox Pro ou optez pour le Pack Duo avec ses 2 bonus offerts.",
     },
     {
       number: "02",
-      title: "Paie en quelques clics",
+      title: "Paiement 100% sécurisé",
       description:
-        "Choisis le moyen de paiement disponible et finalise ta commande.",
+        "Réglez par Mobile Money (MTN, Moov, Celtiis, Orange, Wave) ou Carte bancaire via Saspay SSL.",
     },
     {
       number: "03",
-      title: "Reçois ton accès",
+      title: "Réception instantanée 24/7",
       description:
-        "Après confirmation du paiement, reçois les instructions correspondant à ton achat.",
+        "Recevez immédiatement votre lien d'accès, vos identifiants et le guide d'installation par e-mail.",
     },
   ];
 
-  const benefits = [
+  const guarantees = [
     {
-      icon: "fa-eye",
-      title: "Transparence",
-      description: "Tu sais ce que tu achètes avant de payer.",
+      icon: "fa-shield-check",
+      title: "Sécurité & Transparence",
+      description: "Aucun abonnement récurrent automatique. Vous payez une seule fois ce que vous choisissez.",
     },
     {
       icon: "fa-bolt",
-      title: "Rapidité",
-      description: "Ton achat est traité dès confirmation du paiement.",
+      title: "Livraison en 30 secondes",
+      description: "Traitement automatisé : vos fichiers d'installation sont débloqués immédiatement.",
     },
     {
       icon: "fa-headset",
-      title: "Support",
-      description: "Une assistance est disponible en cas de difficulté.",
+      title: "Support WhatsApp 7j/7",
+      description: "Une équipe réactive prête à vous guider pas-à-pas en cas de moindre interrogation.",
     },
     {
-      icon: "fa-check",
-      title: "Simplicité",
-      description: "Pas de parcours compliqué : choisis, paie, reçois.",
+      icon: "fa-certificate",
+      title: "Garantie Fonctionnement",
+      description: "Remplacement immédiat ou remboursement intégral si votre application rencontre un blocage.",
     },
   ];
 
   return (
-    <div className="how-and-why-wrapper">
-      {/* ---------------------------------- */}
-      {/* SECTION 1: COMMENT ÇA MARCHE     */}
-      {/* ---------------------------------- */}
-      <section className="steps-section">
-        <div className="section-header">
-          <span className="section-badge">COMMENT ÇA MARCHE</span>
-          <h2 className="section-title">Acheter en 3 étapes</h2>
-        </div>
+    <div className="how-why-wrapper-clean">
+      {/* 3 STEPS */}
+      <section className="steps-section-clean">
+        <div className="steps-container">
+          <div className="section-header-center">
+            <span className="section-badge-light">COMMENT ÇA MARCHE</span>
+            <h2 className="section-title-dark">Votre commande en 3 étapes simples</h2>
+          </div>
 
-        <div className="steps-grid">
-          {/* Ligne horizontale de connexion (desktop) */}
-          <div className="steps-connector"></div>
-
-          {steps.map((step, index) => (
-            <div key={index} className="step-card">
-              <div className="step-number-box">
-                <span>{step.number}</span>
+          <div className="steps-row">
+            {steps.map((step, index) => (
+              <div key={index} className="step-item-card">
+                <div className="step-num-circle">{step.number}</div>
+                <h3 className="step-heading">{step.title}</h3>
+                <p className="step-body">{step.description}</p>
               </div>
-              <h3 className="step-card-title">{step.title}</h3>
-              <p className="step-card-desc">{step.description}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ---------------------------------- */}
-      {/* SECTION 2: POURQUOI COMMANDER ICI  */}
-      {/* ---------------------------------- */}
-      <section className="why-section">
-        <div className="section-header">
-          <span className="section-badge">CONFIANCE</span>
-          <h2 className="section-title">Pourquoi commander ici ?</h2>
-        </div>
+      {/* WHY TRUST US */}
+      <section className="why-section-clean" id="avis">
+        <div className="why-container">
+          <div className="section-header-center">
+            <span className="section-badge-light">TRANSPARENCE & FIABILITÉ</span>
+            <h2 className="section-title-dark">Pourquoi commander sur NovaStudio ?</h2>
+          </div>
 
-        <div className="why-grid">
-          {benefits.map((benefit, index) => (
-            <div key={index} className="why-card">
-              <div className="why-icon-box">
-                <i className={`fa-solid ${benefit.icon}`}></i>
+          <div className="why-cards-grid">
+            {guarantees.map((item, index) => (
+              <div key={index} className="why-card-clean">
+                <div className="why-card-icon-box">
+                  <i className={`fa-solid ${item.icon}`}></i>
+                </div>
+                <h3 className="why-card-heading">{item.title}</h3>
+                <p className="why-card-body">{item.description}</p>
               </div>
-              <h3 className="why-card-title">{benefit.title}</h3>
-              <p className="why-card-desc">{benefit.description}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
     </div>

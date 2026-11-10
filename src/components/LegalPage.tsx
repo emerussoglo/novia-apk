@@ -14,25 +14,34 @@ export default function LegalPage({
   sections: LegalSection[];
 }) {
   return (
-    <main className="legal-page">
-      <header className="legal-header">
-        <span className="section-badge">{label}</span>
-        <h1>{title}</h1>
-        <p>{intro}</p>
-      </header>
-      <article className="legal-content">
-        {sections.map((section) => (
-          <section key={section.title}>
-            <h2>{section.title}</h2>
-            {section.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </section>
-        ))}
-      </article>
-      <Link href="/" className="legal-back">
-        <i className="fa-solid fa-arrow-left"></i> Retour à l&apos;accueil
-      </Link>
+    <main className="legal-page-clean">
+      <div className="legal-container-clean">
+        <header className="legal-header-clean">
+          <span className="legal-badge-pill">{label}</span>
+          <h1 className="legal-title-clean">{title}</h1>
+          <p className="legal-intro-clean">{intro}</p>
+        </header>
+
+        <article className="legal-card-box">
+          {sections.map((section) => (
+            <div key={section.title} className="legal-section-block">
+              <h2 className="legal-section-title">{section.title}</h2>
+              {section.paragraphs.map((paragraph, idx) => (
+                <p key={idx} className="legal-paragraph">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          ))}
+        </article>
+
+        <div className="legal-footer-nav">
+          <Link href="/" className="legal-back-clean">
+            <i className="fa-solid fa-arrow-left"></i>
+            <span>Retour à l&apos;accueil</span>
+          </Link>
+        </div>
+      </div>
     </main>
   );
 }

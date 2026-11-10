@@ -1,53 +1,53 @@
 export default function WorkflowSection() {
-  const features = [
+  const steps = [
     {
       icon: "fa-bolt",
-      title: "Créer plus vite",
+      title: "Créer sans restrictions",
       description:
-        "Passe moins de temps à chercher tes outils et plus de temps à créer.",
+        "Accédez immédiatement à tous les filtres, transitions, polices et effets sans aucun filigrane gênant.",
     },
     {
-      icon: "fa-chart-line",
-      title: "Améliorer tes contenus",
+      icon: "fa-film",
+      title: "Qualité cinéma 4K",
       description:
-        "Utilise les fonctionnalités de ton offre pour donner plus de possibilités à tes projets.",
+        "Exportez vos vidéos en 4K 60FPS pour vos réseaux ou profitez d'un streaming cinéma sans latence.",
     },
     {
-      icon: "fa-rocket",
-      title: "Gagner en productivité",
+      icon: "fa-clock",
+      title: "Gain de temps massif",
       description:
-        "Centralise ton workflow et avance plus efficacement sur tes contenus.",
+        "Sous-titres automatiques en 1 clic et suppression de fond intelligente pour monter vos vidéos en un éclair.",
     },
     {
-      icon: "fa-heart",
-      title: "Rester créatif",
+      icon: "fa-shield-halved",
+      title: "Activation garantie à vie",
       description:
-        "Concentre-toi sur tes idées plutôt que sur les limites de ton environnement.",
+        "Pas d'abonnement mensuel caché. Une seule commande, des applications prêtes à l'emploi et une assistance dédiée.",
     },
   ];
 
   return (
-    <section className="workflow-section">
-      {/* Header */}
-      <div className="section-header">
-        <span className="section-badge alt-badge">POURQUOI CES OUTILS ?</span>
-        <h2 className="section-title">
-          Plus qu'un abonnement. <br />
-          Un meilleur workflow.
-        </h2>
-      </div>
+    <section className="workflow-section-clean">
+      <div className="workflow-container">
+        <div className="section-header-center">
+          <span className="section-badge-light">POURQUOI NOS CLIENTS ADORENT</span>
+          <h2 className="section-title-dark">
+            Plus qu&apos;une simple licence, <br />
+            un boost immédiat pour vos projets.
+          </h2>
+        </div>
 
-      {/* Grid 4 colonnes */}
-      <div className="workflow-grid">
-        {features.map((item, index) => (
-          <div key={index} className="workflow-card">
-            <div className="workflow-icon-box">
-              <i className={`fa-solid ${item.icon}`}></i>
+        <div className="workflow-cards-grid">
+          {steps.map((item, index) => (
+            <div key={index} className="workflow-card-clean">
+              <div className="workflow-card-icon">
+                <i className={`fa-solid ${item.icon}`}></i>
+              </div>
+              <h3 className="workflow-card-title">{item.title}</h3>
+              <p className="workflow-card-text">{item.description}</p>
             </div>
-            <h3 className="workflow-card-title">{item.title}</h3>
-            <p className="workflow-card-desc">{item.description}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

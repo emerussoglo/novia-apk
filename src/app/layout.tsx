@@ -5,8 +5,9 @@ import { CartProvider } from "@/components/CartProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Prime Digital",
-  description: "Créateur de solutions numériques",
+  title: "NovaStudio — Licences Logicielles & Abonnements Premium",
+  description:
+    "Boutique officielle de licences à vie et abonnements premium : CapCut Pro, MovieBox Pro, Pack Duo Créateur. Activation immédiate 24/7 et assistance garantie.",
 };
 
 export default function RootLayout({

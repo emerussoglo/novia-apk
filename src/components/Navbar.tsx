@@ -2,71 +2,94 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/components/CartProvider";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { count } = useCart();
 
-  const isActive = (path: string) => pathname === path;
-
   const navLinks = [
-    { name: "Accueil", href: "/" },
-    { name: "Produits", href: "/produits" },
-    { name: "CapCut Pro", href: "/produits" },
-    { name: "MovieBox Pro", href: "/produits" },
-    { name: "FAQ", href: "/faq" },
-    { name: "Contact", href: "/contact" },
+    { name: "CapCut Pro", href: "/produits?item=capcut-pro" },
+    { name: "MovieBox Pro", href: "/produits?item=moviebox-pro" },
+    { name: "Pack Duo VIP", href: "/produits?item=pack-duo" },
+    { name: "Contact", href: "https://wa.me/2290166935805" },
   ];
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/produits?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+    }
+  };
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <>
-      <header className="navbar-container">
-        <div className="navbar-content">
-          {/* Logo */}
-          <Link href="/" className="navbar-brand">
-            <div className="brand-icon">
-              <i className="fa-solid fa-wand-magic-sparkles"></i>
-            </div>
-            <span className="brand-name">Prime Digital</span>
+      {/* Main Solid Orange Navbar (Matching Image 1 & Image 6) */}
+      <header className="solid-header-nav">
+        <div className="solid-header-container">
+          {/* Logo on Left (Solid white logo text/mark) */}
+          <Link href="/" className="solid-nav-logo">
+            <span className="logo-main-text">NovaStudio</span>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="desktop-links">
+          {/* Desktop Categories Links (White, clean, bold, uncrowded) */}
+          <nav className="solid-desktop-links">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.name}
                 href={link.href}
-                className={`nav-link ${isActive(link.href) ? "active" : ""}`}
+                className="solid-link-item"
               >
                 {link.name}
               </Link>
             ))}
           </nav>
 
-          {/* Action Buttons */}
-          <div className="navbar-actions">
+          {/* Right Action Icons (Search, Cart with counter bubble, Profile) */}
+          <div className="solid-right-actions">
+            {/* Search Icon */}
+            <button
+              type="button"
+              className="solid-icon-btn"
+              onClick={() => setSearchOpen(!searchOpen)}
+              aria-label="Rechercher"
+            >
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+            {/* Cart with Counter Badge (0) */}
             <Link
               href="/panier"
-              className="icon-btn cart-nav-btn"
+              className="solid-cart-link"
               aria-label={`Panier, ${count} article${count > 1 ? "s" : ""}`}
             >
               <i className="fa-solid fa-cart-shopping"></i>
-              {count > 0 && <span className="cart-count">{count}</span>}
+              <span className="solid-cart-counter">{count}</span>
             </Link>
 
-            <Link href="/produits" className="primary-btn desktop-btn">
-              <span>Voir les offres</span>
-              <i className="fa-solid fa-arrow-right"></i>
-            </Link>
+            {/* Profile / Account Icon with Chevron */}
+            <a
+              href="https://wa.me/2290166935805"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="solid-user-link"
+              title="Assistance & Compte"
+            >
+              <i className="fa-regular fa-user"></i>
+              <i className="fa-solid fa-chevron-down user-chevron"></i>
+            </a>
 
-            {/* Mobile Hamburger Toggle Button */}
+            {/* Mobile Hamburger Button */}
             <button
-              className="icon-btn mobile-toggle"
+              className="solid-hamburger-btn"
               onClick={toggleMenu}
               aria-label="Menu"
             >
@@ -74,57 +97,83 @@ export default function Navbar() {
             </button>
           </div>
         </div>
+
+        {/* Working Search Bar Dropdown */}
+        {searchOpen && (
+          <div className="solid-search-bar-open">
+            <form onSubmit={handleSearchSubmit} className="search-inline-form">
+              <i className="fa-solid fa-magnifying-glass search-inline-icon"></i>
+              <input
+                type="text"
+                placeholder="Rechercher une application (CapCut, MovieBox...)"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+              />
+              <button type="submit" className="search-inline-submit">
+                Rechercher
+              </button>
+              <button
+                type="button"
+                onClick={() => setSearchOpen(false)}
+                className="search-inline-close"
+                aria-label="Fermer"
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </form>
+          </div>
+        )}
       </header>
 
-      {/* Mobile Backdrop Overlay */}
-      {isOpen && <div className="mobile-overlay" onClick={toggleMenu} />}
+      {/* Mobile Drawer Overlay */}
+      {isOpen && (
+        <div
+          className="solid-drawer-overlay"
+          onClick={toggleMenu}
+          aria-hidden="true"
+        />
+      )}
 
-      {/* Mobile Navigation Drawer */}
-      <aside className={`mobile-drawer ${isOpen ? "open" : ""}`}>
-        <div className="drawer-header">
-          <span className="brand-name">Prime Digital</span>
+      {/* Mobile Menu Drawer (Matching Image 9) */}
+      <aside
+        className={`solid-mobile-drawer ${isOpen ? "open" : ""}`}
+        aria-label="Menu mobile"
+      >
+        {/* Header with solid color and close button */}
+        <div className="solid-drawer-top">
+          <span className="drawer-logo-title">NovaStudio</span>
           <button
-            className="icon-btn close-btn"
+            className="solid-drawer-close"
             onClick={toggleMenu}
-            aria-label="Fermer"
+            aria-label="Fermer le menu"
           >
             <i className="fa-solid fa-xmark"></i>
           </button>
         </div>
 
-        <nav className="mobile-links">
+        {/* Categories list with chevrons on right (Image 9) */}
+        <nav className="solid-drawer-list">
           {navLinks.map((link) => (
             <Link
-              key={link.href}
+              key={link.name}
               href={link.href}
-              className={`mobile-nav-link ${isActive(link.href) ? "active" : ""}`}
+              className="drawer-category-row"
               onClick={toggleMenu}
             >
               <span>{link.name}</span>
               <i className="fa-solid fa-chevron-right"></i>
             </Link>
           ))}
+          <Link
+            href="/panier"
+            className="drawer-category-row highlight-cart"
+            onClick={toggleMenu}
+          >
+            <span>Mon Panier ({count})</span>
+            <i className="fa-solid fa-cart-shopping"></i>
+          </Link>
         </nav>
-
-        <div className="mobile-drawer-footer">
-          <Link
-            href="/produits"
-            className="primary-btn block-btn"
-            onClick={toggleMenu}
-          >
-            <span>Voir les offres</span>
-            <i className="fa-solid fa-arrow-right"></i>
-          </Link>
-
-          <Link
-            href="/support"
-            className="secondary-btn block-btn"
-            onClick={toggleMenu}
-          >
-            <i className="fa-solid fa-headset"></i>
-            <span>Contacter le support</span>
-          </Link>
-        </div>
       </aside>
     </>
   );

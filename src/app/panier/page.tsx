@@ -53,7 +53,7 @@ export default function CartPage() {
           return;
         }
         if (result.status === "PENDING") {
-          setMessage("Vérification de ton paiement en cours...");
+          setMessage("Vérification de votre paiement en cours...");
         }
         if (result.verified === true) {
           const files = Array.isArray(result.downloadFiles)
@@ -63,12 +63,12 @@ export default function CartPage() {
             : [];
           if (files.length === 0) {
             setMessage(
-              "Paiement confirmé, mais les fichiers de cette commande sont indisponibles. Contacte l’assistance.",
+              "Paiement confirmé, mais les fichiers sont indisponibles. Contactez l’assistance.",
             );
             return;
           }
 
-          let emailMessage = "Paiement confirmé. Tes fichiers sont prêts.";
+          let emailMessage = "Paiement confirmé. Vos fichiers sont prêts.";
           if (!emailSentRef.current) {
             emailSentRef.current = true;
             try {
@@ -102,7 +102,7 @@ export default function CartPage() {
         }
         if (result.status === "FAILED" || result.status === "EXPIRED") {
           window.localStorage.removeItem(PENDING_PAYMENT_KEY);
-          setMessage("Le paiement n’a pas abouti. Tu peux réessayer.");
+          setMessage("Le paiement n’a pas abouti. Vous pouvez réessayer.");
           return;
         }
         window.setTimeout(checkPayment, 3000);
@@ -123,7 +123,7 @@ export default function CartPage() {
 
   async function handlePayment() {
     if (!customer.name || !customer.email || items.length === 0) {
-      setMessage("Renseigne ton nom et ton adresse email avant de payer.");
+      setMessage("Renseignez votre nom et votre adresse email avant de payer.");
       return;
     }
     setIsPaying(true);
@@ -157,140 +157,164 @@ export default function CartPage() {
   }
 
   return (
-    <main className="cart-page">
-      <div className="cart-header">
-        <span className="section-badge">PANIER</span>
-        <h1>Finalise ta commande.</h1>
-        <p>Paiement sécurisé en FCFA via SasPay.</p>
+    <main className="cart-page-clean">
+      <div className="cart-header-clean">
+        <h1 className="cart-title-clean">Mon Panier</h1>
+        <p className="cart-subtitle-clean">Paiement sécurisé en FCFA</p>
       </div>
+
       {items.length === 0 ? (
-        <section className="cart-empty">
-          <i
-            className={`fa-solid ${purchasedFiles.length ? "fa-circle-check" : "fa-bag-shopping"}`}
-          ></i>
+        <section className="cart-empty-clean">
+          <div className="cart-empty-icon-wrap">
+            <i
+              className={`fa-solid ${purchasedFiles.length ? "fa-circle-check" : "fa-basket-shopping"}`}
+            ></i>
+          </div>
           <h2>
             {purchasedFiles.length
-              ? "Commande confirmée"
-              : "Ton panier est vide"}
+              ? "Commande confirmée !"
+              : "Votre panier est vide"}
           </h2>
           <p>
             {purchasedFiles.length
-              ? `Tes fichiers sont prêts à être téléchargés.${purchasedBonuses.length ? ` Bonus inclus : ${purchasedBonuses.join(" et ")}.` : ""}`
-              : "Ajoute une offre pour commencer."}
+              ? `Vos fichiers sont débloqués ci-dessous.${purchasedBonuses.length ? ` Bonus inclus : ${purchasedBonuses.join(" et ")}.` : ""}`
+              : "Ajoutez un article pour continuer."}
           </p>
+
           {purchasedFiles.length ? (
-            <div className="download-links">
+            <div className="download-links-clean">
               {purchasedFiles.map((file) => (
-                <a key={file} href={file} download className="secondary-btn">
-                  <i className="fa-solid fa-download"></i> Télécharger{" "}
-                  {file.split("/").pop()}
+                <a key={file} href={file} download className="download-btn-clean">
+                  <i className="fa-solid fa-download"></i> Télécharger (
+                  {file.split("/").pop()})
                 </a>
               ))}
             </div>
           ) : (
-            <Link href="/produits" className="primary-btn">
-              Voir les produits <i className="fa-solid fa-arrow-right"></i>
+            <Link href="/produits" className="cart-return-shop-btn">
+              Voir les produits
             </Link>
           )}
         </section>
       ) : (
-        <div className="cart-layout">
-          <section className="cart-items">
-            <h2>Ta sélection</h2>
-            <p>
-              {orderBonuses.length
-                ? `Bonus du pack inclus : ${orderBonuses.join(" et ")}.`
-                : "WPS Office et InShot sont offerts uniquement pour l’achat des deux applications ensemble."}
-            </p>
-            {items.map((item) => {
-              const product = getItemProduct(item.productId);
-              if (!product) return null;
-              return (
-                <article className="cart-item" key={item.productId}>
-                  <div className="cart-item-icon">
-                    <i className="fa-solid fa-mobile-screen-button"></i>
-                  </div>
-                  <div className="cart-item-info">
-                    <h3>{product.name}</h3>
-                    <p>{formatPrice(product.price)} · Offre à vie</p>
-                  </div>
-                  <div className="quantity-control">
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.productId, item.quantity - 1)
-                      }
-                      aria-label="Diminuer"
-                    >
-                      −
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.productId, item.quantity + 1)
-                      }
-                      aria-label="Augmenter"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <strong>{formatPrice(product.price * item.quantity)}</strong>
-                  <button
-                    className="remove-item"
-                    onClick={() => removeItem(item.productId)}
-                    aria-label={`Retirer ${product.name}`}
-                  >
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
-                </article>
-              );
-            })}
-          </section>
-          <aside className="cart-summary">
-            <h2>Récapitulatif</h2>
-            <div className="summary-total">
-              <span>Total</span>
-              <strong>{formatPrice(total)}</strong>
+        <div className="cart-layout-clean">
+          <section className="cart-items-card">
+            <div className="cart-card-header">
+              <h2>Votre sélection ({items.reduce((s, i) => s + i.quantity, 0)})</h2>
             </div>
-            <label>
-              Nom complet
-              <input
-                value={customer.name}
-                onChange={(event) =>
-                  setCustomer({ ...customer, name: event.target.value })
-                }
-                placeholder="Ton nom"
-              />
-            </label>
-            <label>
-              Email
-              <input
-                type="email"
-                value={customer.email}
-                onChange={(event) =>
-                  setCustomer({ ...customer, email: event.target.value })
-                }
-                placeholder="ton@email.com"
-              />
-            </label>
-            <button
-              className="primary-btn block-btn"
-              onClick={handlePayment}
-              disabled={isPaying}
-            >
-              {isPaying
-                ? "Ouverture du paiement..."
-                : `Payer ${formatPrice(total)}`}{" "}
-              <i className="fa-solid fa-lock"></i>
-            </button>
-            {message && (
-              <p className="cart-message" role="status">
-                {message}
-              </p>
+
+            {orderBonuses.length > 0 && (
+              <div className="cart-bonus-notice">
+                <i className="fa-solid fa-gift"></i>
+                <span>Bonus inclus : {orderBonuses.join(" et ")}</span>
+              </div>
             )}
-            <small>
-              En validant, tu acceptes le traitement de ta commande et la
-              livraison numérique après confirmation du paiement.
-            </small>
+
+            <div className="cart-items-list">
+              {items.map((item) => {
+                const product = getItemProduct(item.productId);
+                if (!product) return null;
+                return (
+                  <article className="cart-item-row" key={item.productId}>
+                    <div className="cart-item-main">
+                      <h3 className="cart-item-title">{product.name}</h3>
+                      <span className="cart-item-meta">
+                        {formatPrice(product.price)} · Licence à vie
+                      </span>
+                    </div>
+
+                    <div className="cart-item-stepper">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          updateQuantity(item.productId, item.quantity - 1)
+                        }
+                      >
+                        −
+                      </button>
+                      <span className="stepper-count">{item.quantity}</span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          updateQuantity(item.productId, item.quantity + 1)
+                        }
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <div className="cart-item-price-col">
+                      <strong>{formatPrice(product.price * item.quantity)}</strong>
+                    </div>
+
+                    <button
+                      className="cart-item-remove-btn"
+                      onClick={() => removeItem(item.productId)}
+                      aria-label="Supprimer"
+                    >
+                      <i className="fa-solid fa-trash-can"></i>
+                    </button>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
+          <aside className="cart-checkout-summary-card">
+            <h2>Récapitulatif</h2>
+
+            <div className="summary-breakdown">
+              <div className="summary-row">
+                <span>Total</span>
+                <strong className="summary-total-price">{formatPrice(total)}</strong>
+              </div>
+            </div>
+
+            <div className="checkout-fields-form">
+              <div className="input-group-clean">
+                <label htmlFor="customer-name">Nom complet</label>
+                <input
+                  id="customer-name"
+                  value={customer.name}
+                  onChange={(e) =>
+                    setCustomer({ ...customer, name: e.target.value })
+                  }
+                  placeholder="Votre nom"
+                  required
+                />
+              </div>
+
+              <div className="input-group-clean">
+                <label htmlFor="customer-email">Email</label>
+                <input
+                  id="customer-email"
+                  type="email"
+                  value={customer.email}
+                  onChange={(e) =>
+                    setCustomer({ ...customer, email: e.target.value })
+                  }
+                  placeholder="votre@email.com"
+                  required
+                />
+              </div>
+
+              <button
+                className="checkout-submit-btn"
+                onClick={handlePayment}
+                disabled={isPaying}
+                type="button"
+              >
+                {isPaying
+                  ? "Ouverture du paiement..."
+                  : `Payer ${formatPrice(total)}`}
+              </button>
+
+              {message && (
+                <div className="checkout-status-banner" role="status">
+                  <span>{message}</span>
+                </div>
+              )}
+            </div>
           </aside>
         </div>
       )}

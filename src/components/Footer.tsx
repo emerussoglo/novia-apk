@@ -2,74 +2,53 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="footer-section">
-      <div className="footer-container">
-        {/* Partie supérieure : Grille des liens */}
-        <div className="footer-top">
-          {/* Colonne Marque / Présentation */}
-          <div className="footer-brand-col">
-            <Link href="/" className="footer-brand-logo">
-              <div className="brand-icon-box">
-                <i className="fa-solid fa-wand-magic-sparkles"></i>
-              </div>
-              <span className="brand-name">Prime Digital</span>
-            </Link>
-            <p className="footer-brand-desc">
-              Des outils premium pour créer, monter et développer tes contenus.
+    <footer className="exact-white-footer">
+      <div className="exact-footer-container">
+        <div className="exact-footer-grid">
+          {/* Brand Col */}
+          <div className="exact-footer-col">
+            <span className="exact-footer-brand">NovaStudio</span>
+            <p className="exact-footer-desc">
+              Licences officielles à vie et abonnements numériques vérifiés.
             </p>
-           <a
-  className="footer-contact"
-  href="https://wa.me/2290166935805"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  <i className="fa-brands fa-whatsapp"></i> +229 01 66 93 58 05
-</a>
+            <a
+              href="https://wa.me/2290166935805"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="exact-footer-wa-link"
+            >
+              <i className="fa-brands fa-whatsapp"></i> +229 01 66 93 58 05
+            </a>
           </div>
 
-          {/* Colonne 1 : Navigation */}
-          <div className="footer-col">
-            <h4 className="footer-title">Navigation</h4>
-            <ul className="footer-links">
+          {/* Links Col 1 */}
+          <div className="exact-footer-col">
+            <h4 className="exact-footer-heading">Produits</h4>
+            <ul className="exact-footer-links">
               <li>
-                <Link href="/">Accueil</Link>
+                <Link href="/produits?item=capcut-pro">CapCut Pro</Link>
               </li>
               <li>
-                <Link href="/produits">Produits</Link>
+                <Link href="/produits?item=moviebox-pro">MovieBox Pro</Link>
               </li>
               <li>
-                <Link href="#faq">FAQ</Link>
-              </li>
-              <li>
-                <Link href="#contact">Contact</Link>
+                <Link href="/produits?item=pack-duo">Pack Duo VIP</Link>
               </li>
             </ul>
           </div>
 
-          {/* Colonne 2 : Produits */}
-          <div className="footer-col">
-            <h4 className="footer-title">Produits</h4>
-            <ul className="footer-links">
+          {/* Links Col 2 */}
+          <div className="exact-footer-col">
+            <h4 className="exact-footer-heading">Informations</h4>
+            <ul className="exact-footer-links">
               <li>
-                <Link href="/produits">CapCut Pro</Link>
+                <Link href="/panier">Panier</Link>
               </li>
               <li>
-                <Link href="/produits">MovieBox Pro</Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Colonne 3 : Légal */}
-          <div className="footer-col">
-            <h4 className="footer-title">Légal</h4>
-            <ul className="footer-links">
-              <li>
-                <Link href="/confidentialite">
-                  Politique de confidentialité
-                </Link>
+                <Link href="/conditions-de-vente">Conditions Générales</Link>
               </li>
               <li>
-                <Link href="/conditions-de-vente">Conditions de vente</Link>
+                <Link href="/confidentialite">Politique de confidentialité</Link>
               </li>
               <li>
                 <Link href="/mentions-legales">Mentions légales</Link>
@@ -78,24 +57,15 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Separateur */}
-        <div className="footer-divider"></div>
-
-        {/* Partie inférieure : Copyright & Réassurance */}
-        <div className="footer-bottom">
-          <p className="copyright-text">
-            © 2026 Prime Digital. Tous droits réservés.
-          </p>
-
-          <div className="footer-trust-badges">
-            <div className="trust-item">
-              <i className="fa-solid fa-lock"></i>
-              <span>Paiement sécurisé</span>
-            </div>
-            <div className="trust-item">
-              <i className="fa-solid fa-headset"></i>
-              <span>Support</span>
-            </div>
+        {/* Bottom copyright row */}
+        <div className="exact-footer-bottom">
+          <p>© {new Date().getFullYear()} NovaStudio. Tous droits réservés.</p>
+          <div className="exact-footer-methods">
+            <span>MTN</span>
+            <span>Moov</span>
+            <span>Celtiis</span>
+            <span>Wave</span>
+            <span>Carte</span>
           </div>
         </div>
       </div>

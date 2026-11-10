@@ -1,129 +1,92 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import AddToCartButton from "@/components/AddToCartButton";
+import { products, Product } from "@/lib/products";
+import { useCart } from "@/components/CartProvider";
+import ProductBox3D from "@/components/ProductBox3D";
+import ProductQuickViewModal from "@/components/ProductQuickViewModal";
 
 export default function ProductsSection() {
-  const products = [
-    {
-      id: "capcut-pro",
-      badge: "POPULAIRE",
-      platform: "Application mobile uniquement",
-      title: "CapCut Pro",
-      description:
-        "Une solution pensée pour les créateurs qui souhaitent disposer des fonctionnalités incluses dans leur offre premium et travailler plus efficacement sur leurs contenus vidéo.",
-      features: [
-        "Offre premium sélectionnée",
-        "Fonctionnalités incluses selon le plan",
-        "Utilisation pour tes projets créatifs",
-        "Activation selon les modalités indiquées",
-        "Assistance disponible",
-      ],
-      price: "1000",
-      period: "/ à vie",
-      popular: true,
-      btnText: "Découvrir CapCut Pro",
-      link: "/produits",
-    },
-    {
-      id: "moviebox-pro",
-      badge: null,
-      platform: "Application mobile uniquement",
-      title: "MovieBox Pro",
-      description:
-        "Une solution pour les créateurs qui souhaitent enrichir leur environnement de création vidéo avec les fonctionnalités incluses dans leur offre.",
-      features: [
-        "Offre premium sélectionnée",
-        "Fonctionnalités incluses selon le plan",
-        "Utilisation pour tes projets",
-        "Activation selon les modalités indiquées",
-        "Assistance disponible",
-      ],
-      price: "1000",
-      period: "/ à vie",
-      popular: false,
-      btnText: "Découvrir MovieBox Pro",
-      link: "/produits",
-    },
-  ];
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [addedId, setAddedId] = useState<string | null>(null);
+  const { addItem } = useCart();
+
+  const handleAdd = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    addItem(id);
+    setAddedId(id);
+    window.setTimeout(() => setAddedId(null), 1500);
+  };
+
+  const getVariant = (id: string): "capcut" | "moviebox" | "duo" => {
+    if (id === "capcut-pro") return "capcut";
+    if (id === "moviebox-pro") return "moviebox";
+    return "duo";
+  };
 
   return (
-    <section className="products-section" id="produits">
-      {/* En-tête de la section */}
-      <div className="section-header">
-        <span className="section-badge">NOS PRODUITS</span>
-        <h2 className="section-title">
-          Choisis ton outil. <br />
-          Commence à créer.
-        </h2>
-        <p className="section-subtitle">
-          Deux solutions. Deux usages. Une expérience d&apos;achat simple.
-        </p>
-      </div>
+    <section className="exact-nouveautes-section">
+      <div className="exact-nouveautes-container">
+        <h2 className="exact-nouveautes-heading">Nouveautés</h2>
 
-      {/* Grille des cartes de tarification */}
-      <div className="products-grid">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className={`product-card ${product.popular ? "featured" : ""}`}
-          >
-            {/* Tag populaire au-dessus de la carte */}
-            {product.popular && (
-              <div className="popular-badge">
-                <i className="fa-solid fa-star"></i>
-                <span>{product.badge}</span>
-              </div>
-            )}
-
-            {/* Support / Plateforme */}
-            <div className="product-platform">
-              <i className="fa-solid fa-mobile-screen"></i>
-              <span>{product.platform}</span>
-            </div>
-
-            {/* Nom & Description */}
-            <h3 className="product-name">{product.title}</h3>
-            <p className="product-description">{product.description}</p>
-
-            {/* Liste des fonctionnalités */}
-            <ul className="product-features">
-              {product.features.map((feat, idx) => (
-                <li key={idx}>
-                  <i className="fa-solid fa-check"></i>
-                  <span>{feat}</span>
-                </li>
-              ))}
-            </ul>
-
-            {/* Prix */}
-            <div className="product-price-box">
-              <div className="price-value">
-                <span className="price">{product.price}</span>
-                <span className="currency">FCFA</span>
-              </div>
-              <span className="period">{product.period}</span>
-            </div>
-
-            {/* Boutons d'action */}
-            <div className="product-actions">
-              <Link
-                href={product.link}
-                className={
-                  product.popular
-                    ? "primary-btn block-btn"
-                    : "outline-btn block-btn"
-                }
+        <div className="exact-nouveautes-row">
+          {products.map((product) => {
+            const isAdded = addedId === product.id;
+            return (
+              <div
+                key={product.id}
+                className="exact-product-card"
+                onClick={() => setSelectedProduct(product)}
               >
-                <span>{product.btnText}</span>
-                <i className="fa-solid fa-arrow-right"></i>
-              </Link>
+                {/* Visual Soft Grey Container */}
+                <div className="exact-product-img-box">
+                  <ProductBox3D
+                    title={product.name.split("—")[0]}
+                    subtitle="Licence à vie"
+                    variant={getVariant(product.id)}
+                    size="md"
+                    badge={product.discount}
+                  />
+                </div>
 
-              <AddToCartButton productId={product.id} />
-            </div>
-          </div>
-        ))}
+                {/* Title */}
+                <h3 className="exact-product-title">{product.name}</h3>
+
+                {/* Price Row: Tag + Price + Old Price + Discount */}
+                <div className="exact-product-price-row">
+                  <div className="exact-price-lead">
+                    <i className="fa-solid fa-tag"></i>
+                    <span className="exact-price-val">
+                      {product.price.toLocaleString("fr-FR")} FCFA
+                    </span>
+                  </div>
+                  <span className="exact-price-old">
+                    {product.originalPrice.toLocaleString("fr-FR")} FCFA
+                  </span>
+                  <span className="exact-price-badge">{product.discount}</span>
+                </div>
+
+                {/* Pill Button "Ajouter" */}
+                <button
+                  type="button"
+                  onClick={(e) => handleAdd(product.id, e)}
+                  className={`exact-product-add-btn ${isAdded ? "added" : ""}`}
+                >
+                  {isAdded ? "Ajouté" : "Ajouter"}
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
+
+      {/* Product Detail Modal (without Trustpilot) */}
+      <ProductQuickViewModal
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+      />
     </section>
   );
 }
