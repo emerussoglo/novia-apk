@@ -89,7 +89,7 @@ export const products: Product[] = [
   {
     id: "sfx",
     name: "Sound Effects (SFX)",
-    price: 2500,
+    price: 3000,
     category: "Audio",
     badge: "EFFETS SONORES",
     deviceType: "Montage vidéo",
