@@ -26,19 +26,19 @@ export default function Footer() {
             <h4 className="exact-footer-heading">Produits</h4>
             <ul className="exact-footer-links">
               <li>
-                <Link href="/produits?item=capcut-pro">CapCut Pro téléphone</Link>
+                <Link href="/produits/capcut-pro">CapCut Pro téléphone</Link>
               </li>
               <li>
-                <Link href="/produits?item=capcut-pc">CapCut Pro ordinateur</Link>
+                <Link href="/produits/capcut-pc">CapCut Pro ordinateur</Link>
               </li>
               <li>
-                <Link href="/produits?item=photoshop">Adobe Photoshop</Link>
+                <Link href="/produits/photoshop">Adobe Photoshop</Link>
               </li>
               <li>
-                <Link href="/produits?item=premiere-pro">Premiere Pro</Link>
+                <Link href="/produits/premiere-pro">Premiere Pro</Link>
               </li>
               <li>
-                <Link href="/produits?item=sfx">Sound Effects (SFX)</Link>
+                <Link href="/produits/sfx">Sound Effects (SFX)</Link>
               </li>
             </ul>
           </div>

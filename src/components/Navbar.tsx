@@ -14,9 +14,9 @@ export default function Navbar() {
   const { count } = useCart();
 
   const navLinks = [
-    { name: "CapCut Pro", href: "/produits?item=capcut-pro" },
-    { name: "Photoshop", href: "/produits?item=photoshop" },
-    { name: "Premiere Pro", href: "/produits?item=premiere-pro" },
+    { name: "CapCut Pro", href: "/produits/capcut-pro" },
+    { name: "Photoshop", href: "/produits/photoshop" },
+    { name: "Premiere Pro", href: "/produits/premiere-pro" },
     { name: "Contact", href: "https://wa.me/2290166935805" },
   ];
 
@@ -38,7 +38,7 @@ export default function Navbar() {
           {/* Logo on Left (Solid white logo text/mark) */}
           <Link href="/" className="solid-nav-logo">
             <span className="logo-main-text">NovaStudio</span>
-          </Link>
+          </Link> 
 
           {/* Desktop Categories Links (White, clean, bold, uncrowded) */}
           <nav className="solid-desktop-links">

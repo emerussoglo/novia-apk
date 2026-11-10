@@ -29,7 +29,7 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         />
-        <link rel="shortcut icon" href="/img/image.png" type="image/x-icon" />
+        <link rel="shortcut icon" href="/img/logo.png" type="image/x-icon" />
       </head>
       <body>
         <ScrollRevealObserver />

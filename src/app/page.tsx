@@ -4,6 +4,8 @@ import ProductsSection from "@/components/ProductsSection";
 import SplitBanners from "@/components/SplitBanners";
 import FaqSection from "@/components/FaqSection";
 import CtaSection from "@/components/CtaSection";
+import TestimonialsScreenshots from "@/components/TestimonialsScreenshots";
+import TestimonialsCards from "@/components/TestimonialsCards";
 
 export default function Home() {
   return (
@@ -14,6 +16,8 @@ export default function Home() {
       <SplitBanners />
       <FaqSection />
       <CtaSection />
+      {/* <TestimonialsScreenshots />  */}
+      <TestimonialsCards /> 
     </>
   );
 }

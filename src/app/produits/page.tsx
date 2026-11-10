@@ -2,33 +2,21 @@
 
 import { useState, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { products, type Product } from "@/lib/products";
+import Link from "next/link";
+import { products } from "@/lib/products";
 import { useCart } from "@/components/CartProvider";
-import ProductBox3D from "@/components/ProductBox3D";
-import ProductQuickViewModal from "@/components/ProductQuickViewModal";
+import ProductMockup from "@/components/ProductMockup";
 import { useDeliveryAvailability } from "@/hooks/useDeliveryAvailability";
 
 function ProductsContent() {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
-  const initialItem = searchParams.get("item") || "";
 
   const [selectedCategory, setSelectedCategory] = useState("Tous");
   const [searchQuery, setSearchQuery] = useState(initialSearch);
-  const [manualSelection, setManualSelection] = useState<{
-    product: Product;
-    itemParam: string;
-  } | null>(null);
-  const [dismissedItem, setDismissedItem] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
   const { availableProducts, isLoading, error } = useDeliveryAvailability();
-  const selectedProduct =
-    manualSelection?.itemParam === initialItem
-      ? manualSelection.product
-      : dismissedItem === initialItem
-        ? null
-        : products.find((product) => product.id === initialItem) ?? null;
 
   const categories = [
     "Tous",
@@ -103,36 +91,34 @@ function ProductsContent() {
           const isAdded = addedId === product.id;
           const isAvailable = availableProducts[product.id] === true;
           return (
-            <div
+            <article
               key={product.id}
               className="exact-product-card scroll-reveal"
-              onClick={() => setManualSelection({ product, itemParam: initialItem })}
             >
-              <div className="exact-product-img-box">
-                <ProductBox3D
-                  title={product.name}
-                  subtitle={product.badge}
-                  variant={product.visualVariant}
-                  size="md"
-                  badge={product.badge}
-                />
-              </div>
+              <Link
+                href={`/produits/${product.id}`}
+                className="exact-product-card-link"
+              >
+                <div className="exact-product-img-box">
+                  <ProductMockup product={product} placement="card" />
+                </div>
+                <h3 className="exact-product-title">{product.name}</h3>
+                <p className="exact-product-description">
+                  {product.description}
+                </p>
 
-              <h3 className="exact-product-title">{product.name}</h3>
-              <p className="exact-product-description">{product.description}</p>
-
-              <div className="exact-product-price-row">
-                <div className="exact-price-lead">
-                  <i className="fa-solid fa-tag"></i>
-                  <span className="exact-price-val">
-                    {product.price.toLocaleString("fr-FR")} FCFA
+                <div className="exact-product-price-row">
+                  <div className="exact-price-lead">
+                    <i className="fa-solid fa-tag"></i>
+                    <span className="exact-price-val">
+                      {product.price.toLocaleString("fr-FR")} FCFA
+                    </span>
+                  </div>
+                  <span className="exact-product-device">
+                    {product.deviceType}
                   </span>
                 </div>
-                <span className="exact-product-device">
-                {product.deviceType}
-                </span>
-              </div>
-
+              </Link>
               <button
                 type="button"
                 onClick={(e) => handleAdd(product.id, e)}
@@ -147,7 +133,7 @@ function ProductsContent() {
                     ? "Ajouter au panier"
                     : "Bientôt disponible"}
               </button>
-            </div>
+            </article>
           );
         })}
       </div>
@@ -158,13 +144,6 @@ function ProductsContent() {
         </p>
       )}
 
-      <ProductQuickViewModal
-        product={selectedProduct}
-        onClose={() => {
-          setManualSelection(null);
-          setDismissedItem(initialItem);
-        }}
-      />
     </div>
   );
 }

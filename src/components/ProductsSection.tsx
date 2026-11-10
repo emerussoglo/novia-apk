@@ -1,21 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { products, type Product } from "@/lib/products";
+import Link from "next/link";
+import { products } from "@/lib/products";
 import { useCart } from "@/components/CartProvider";
-import ProductBox3D from "@/components/ProductBox3D";
-import ProductQuickViewModal from "@/components/ProductQuickViewModal";
+import ProductMockup from "@/components/ProductMockup";
 import { useDeliveryAvailability } from "@/hooks/useDeliveryAvailability";
 
 export default function ProductsSection() {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
   const { availableProducts, isLoading, error } = useDeliveryAvailability();
 
-  const handleAdd = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
+  const handleAdd = (id: string) => {
     if (!availableProducts[id]) return;
     addItem(id);
     setAddedId(id);
@@ -38,41 +35,37 @@ export default function ProductsSection() {
             const isAdded = addedId === product.id;
             const isAvailable = availableProducts[product.id] === true;
             return (
-              <div
+              <article
                 key={product.id}
                 className="exact-product-card scroll-reveal"
-                onClick={() => setSelectedProduct(product)}
               >
-                <div className="exact-product-img-box">
-                  <ProductBox3D
-                    title={product.name}
-                    subtitle={product.badge}
-                    variant={product.visualVariant}
-                    size="md"
-                    badge={product.badge}
-                  />
-                </div>
+                <Link
+                  href={`/produits/${product.id}`}
+                  className="exact-product-card-link"
+                >
+                  <div className="exact-product-img-box">
+                    <ProductMockup product={product} placement="card" />
+                  </div>
+                  
+                  <p className="exact-product-description">
+                    {product.description}
+                  </p>
 
-                <h3 className="exact-product-title">{product.name}</h3>
-                <p className="exact-product-description">
-                  {product.description}
-                </p>
-
-                <div className="exact-product-price-row">
-                  <div className="exact-price-lead">
-                    <i className="fa-solid fa-tag"></i>
-                    <span className="exact-price-val">
-                      {product.price.toLocaleString("fr-FR")} FCFA
+                  <div className="exact-product-price-row">
+                    <div className="exact-price-lead">
+                      <i className="fa-solid fa-tag"></i>
+                      <span className="exact-price-val">
+                        {product.price.toLocaleString("fr-FR")} FCFA
+                      </span>
+                    </div>
+                    <span className="exact-product-device">
+                      {product.deviceType}
                     </span>
                   </div>
-                  <span className="exact-product-device">
-                    {product.deviceType}
-                  </span>
-                </div>
-
+                </Link>
                 <button
                   type="button"
-                  onClick={(e) => handleAdd(product.id, e)}
+                  onClick={() => handleAdd(product.id)}
                   className={`exact-product-add-btn ${isAdded ? "added" : ""}`}
                   disabled={isLoading || !isAvailable}
                 >
@@ -84,17 +77,12 @@ export default function ProductsSection() {
                         ? "Ajouter au panier"
                         : "Bientôt disponible"}
                 </button>
-              </div>
+              </article>
             );
           })}
         </div>
       </div>
 
-      {/* Product Detail Modal (without Trustpilot) */}
-      <ProductQuickViewModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-      />
     </section>
   );
 }

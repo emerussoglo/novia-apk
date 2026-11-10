@@ -1,3 +1,5 @@
+import Link from "next/link";
+import ProductMockup from "@/components/ProductMockup";
 import { products } from "@/lib/products";
 
 export default function ComparisonSection() {
@@ -10,12 +12,17 @@ export default function ComparisonSection() {
         </div>
         <div className="comparison-products-grid">
           {products.map((product) => (
-            <article key={product.id} className="comparison-product-card">
+            <Link
+              key={product.id}
+              href={`/produits/${product.id}`}
+              className="comparison-product-card"
+            >
+              <ProductMockup product={product} placement="card" />
               <span>{product.deviceType}</span>
               <h3>{product.name}</h3>
               <p>{product.description}</p>
               <strong>{product.price.toLocaleString("fr-FR")} FCFA</strong>
-            </article>
+            </Link>
           ))}
         </div>
       </div>

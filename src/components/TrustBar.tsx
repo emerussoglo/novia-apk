@@ -1,31 +1,31 @@
 export default function TrustBar() {
   const items = [
-    {
-      icon: "fa-regular fa-thumbs-up",
-      title: "Support gratuit",
-      subtitle: "Email & Live Chat",
-    },
-    {
-      icon: "fa-regular fa-face-smile",
-      title: "350K+",
-      subtitle: "Clients satisfaits",
-    },
-    {
-      icon: "fa-solid fa-bolt",
-      title: "Rapide",
-      subtitle: "Envoi en quelques secondes",
-    },
-    {
-      icon: "fa-solid fa-lock",
-      title: "100%",
-      subtitle: "Paiements sécurisés SSL",
-    },
-    {
-      icon: "fa-regular fa-sun",
-      title: "18+",
-      subtitle: "Des années de succès",
-    },
-  ];
+  {
+    icon: "fa-solid fa-bolt",
+    title: "Livraison instantanée",
+    subtitle: "Accès par e-mail en 2 min",
+  },
+  {
+    icon: "fa-solid fa-shield-halved",
+    title: "100% Sécurisé",
+    subtitle: "Paiement Mobile Money & Carte",
+  },
+  {
+  icon: "fa-solid fa-users",
+  title: "Communauté active",
+  subtitle: "Créateurs qui nous font confiance",
+},
+  {
+    icon: "fa-solid fa-headset",
+    title: "Support Réactif",
+    subtitle: "Assistance WhatsApp & Chat",
+  },
+  {
+    icon: "fa-solid fa-rotate-right",
+    title: "Mises à jour",
+    subtitle: "Profitez des dernières versions",
+  },
+];
 
   return (
     <section className="exact-trust-bar-section scroll-reveal">

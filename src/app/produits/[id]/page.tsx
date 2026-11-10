@@ -4,7 +4,7 @@ import { use, useState } from "react";
 import { notFound, useRouter } from "next/navigation";
 import { getProduct } from "@/lib/products";
 import { useCart } from "@/components/CartProvider";
-import ProductBox3D from "@/components/ProductBox3D";
+import ProductMockup from "@/components/ProductMockup";
 import { useDeliveryAvailability } from "@/hooks/useDeliveryAvailability";
 
 export default function ProductDetailPage({
@@ -46,15 +46,8 @@ export default function ProductDetailPage({
     <main className="exact-pdp-page-container">
       <div className="exact-pdp-window">
         <div className="exact-pdp-layout">
-          {/* Left Column: 3D Product Box */}
           <div className="exact-pdp-visual">
-            <ProductBox3D
-              title={product.name.split("—")[0]}
-              subtitle={product.badge}
-              variant={product.visualVariant}
-              size="lg"
-              badge={product.badge}
-            />
+            <ProductMockup product={product} placement="detail" />
           </div>
 
           {/* Right Column: Exact Layout from Screenshot 8 */}
@@ -144,40 +137,41 @@ export default function ProductDetailPage({
 
             {/* 3 Trust items */}
             <div className="exact-pdp-trust-list">
-              <div className="exact-trust-row">
+             
+
+              <ul className="exact-pdp-highlights">
+                {product.highlights.map((highlight) => (
+                  <li key={highlight}>
+                    <i className="fa-solid fa-check"></i>
+                    <span>{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+
+
+               <div className="exact-trust-row">
                 <i className="fa-solid fa-shield-halved exact-row-icon"></i>
                 <div className="exact-row-text">
                   <strong>Sécurité garantie</strong>
                   <p>Paiements 100% sécurisés avec cryptage SSL via Saspay et Mobile Money</p>
                 </div>
               </div>
-
+              
               <div className="exact-trust-row">
                 <i className="fa-solid fa-paper-plane exact-row-icon"></i>
                 <div className="exact-row-text">
                   <strong>Livraison immédiate</strong>
-                  <p>Recevez le code directement par email, actif 24/7</p>
+                  <p>
+                    Recevez votre fichier de livraison par e-mail après
+                    confirmation du paiement.
+                  </p>
                 </div>
               </div>
 
-              <div className="exact-trust-row">
-                <i className="fa-solid fa-headset exact-row-icon"></i>
-                <div className="exact-row-text">
-                  <strong>Support gratuit</strong>
-                  <p>Nos experts sont toujours prêts à vous aider, gratuitement.</p>
-                </div>
-              </div>
+              
             </div>
 
-            {/* Certifications */}
-            <div className="exact-pdp-certifs">
-              <span className="exact-certif-chip">
-                <i className="fa-solid fa-award"></i> Partenaire Certifié
-              </span>
-              <span className="exact-certif-chip">
-                <i className="fa-solid fa-lock"></i> SSL 256-Bit
-              </span>
-            </div>
+            
           </div>
         </div>
       </div>

@@ -179,15 +179,7 @@ export default function ProductQuickViewModal({
               </div>
             </div>
 
-            {/* Partner Certification Badges (Exact Screenshot 8) */}
-            <div className="exact-pdp-certifs">
-              <span className="exact-certif-chip">
-                <i className="fa-solid fa-award"></i> Partenaire Certifié
-              </span>
-              <span className="exact-certif-chip">
-                <i className="fa-solid fa-lock"></i> SSL 256-Bit
-              </span>
-            </div>
+            
           </div>
         </div>
       </div>

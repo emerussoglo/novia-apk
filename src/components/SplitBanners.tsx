@@ -17,7 +17,7 @@ export default function SplitBanners() {
               onClick={() => addItem("photoshop")}
               className="exact-split-pill-btn"
             >
-              Découvrir Photoshop
+              Découvrir
             </button>
           </div>
         </div>
@@ -31,7 +31,7 @@ export default function SplitBanners() {
               onClick={() => addItem("premiere-pro")}
               className="exact-split-pill-btn"
             >
-              Découvrir Premiere Pro
+              Découvrir
             </button>
           </div>
         </div>

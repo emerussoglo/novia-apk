@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="background" x1="120" y1="50" x2="1470" y2="880" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#25120A"/>
+      <stop offset="1" stop-color="#090B18"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="340" y1="0" x2="1330" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB347"/>
+      <stop offset="1" stop-color="#F35C20"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" rx="36" fill="url(#background)"/>
+  <circle cx="1270" cy="210" r="220" fill="#F86011" fill-opacity=".12"/>
+  <circle cx="1270" cy="210" r="150" stroke="#F86011" stroke-opacity=".35" stroke-width="2"/>
+  <circle cx="1270" cy="210" r="105" stroke="#F86011" stroke-opacity=".45" stroke-width="2"/>
+  <path d="M90 505h110l44-110 54 220 65-330 66 440 62-330 60 220 58-110h67l46-165 54 330 66-220 58 110h74l48-165 58 330 60-275 48 165h102" stroke="url(#wave)" stroke-linecap="round" stroke-linejoin="round" stroke-width="18"/>
+  <text x="100" y="185" fill="#FFB347" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" letter-spacing="12">NOVASTUDIO • AUDIO</text>
+  <text x="100" y="330" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="132" font-weight="800" letter-spacing="4">SOUND</text>
+  <text x="100" y="455" fill="#F86011" font-family="Arial, Helvetica, sans-serif" font-size="132" font-weight="800" letter-spacing="4">EFFECTS</text>
+  <rect x="1080" y="645" width="380" height="112" rx="56" fill="#F86011"/>
+  <text x="1270" y="721" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="800" text-anchor="middle" letter-spacing="8">SFX</text>
+</svg>
