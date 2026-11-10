@@ -4,7 +4,7 @@ export default function HowAndWhySection() {
       number: "01",
       title: "Choisissez votre outil",
       description:
-        "Sélectionnez CapCut Pro, MovieBox Pro ou optez pour le Pack Duo avec ses 2 bonus offerts.",
+        "Choisissez CapCut Pro pour téléphone ou ordinateur, Photoshop, Premiere Pro ou les effets sonores SFX.",
     },
     {
       number: "02",
@@ -16,7 +16,7 @@ export default function HowAndWhySection() {
       number: "03",
       title: "Réception instantanée 24/7",
       description:
-        "Recevez immédiatement votre lien d'accès, vos identifiants et le guide d'installation par e-mail.",
+        "Téléchargez immédiatement le fichier de livraison associé à votre commande.",
     },
   ];
 

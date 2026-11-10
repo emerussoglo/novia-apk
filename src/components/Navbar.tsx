@@ -15,8 +15,8 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "CapCut Pro", href: "/produits?item=capcut-pro" },
-    { name: "MovieBox Pro", href: "/produits?item=moviebox-pro" },
-    { name: "Pack Duo VIP", href: "/produits?item=pack-duo" },
+    { name: "Photoshop", href: "/produits?item=photoshop" },
+    { name: "Premiere Pro", href: "/produits?item=premiere-pro" },
     { name: "Contact", href: "https://wa.me/2290166935805" },
   ];
 
@@ -105,7 +105,7 @@ export default function Navbar() {
               <i className="fa-solid fa-magnifying-glass search-inline-icon"></i>
               <input
                 type="text"
-                placeholder="Rechercher une application (CapCut, MovieBox...)"
+                placeholder="Rechercher un outil (CapCut, Photoshop...)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus

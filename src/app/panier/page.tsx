@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/CartProvider";
-import { getOrderDelivery } from "@/lib/products";
 
 const formatPrice = (amount: number) =>
   `${amount.toLocaleString("fr-FR")} FCFA`;
@@ -16,11 +15,7 @@ export default function CartPage() {
   const [message, setMessage] = useState("");
   const [isPaying, setIsPaying] = useState(false);
   const [purchasedFiles, setPurchasedFiles] = useState<string[]>([]);
-  const [purchasedBonuses, setPurchasedBonuses] = useState<string[]>([]);
   const emailSentRef = useRef(false);
-  const orderBonuses = getOrderDelivery(
-    items.map((item) => item.productId),
-  ).bonuses;
 
   useEffect(() => {
     const pending = window.localStorage.getItem(PENDING_PAYMENT_KEY);
@@ -87,14 +82,6 @@ export default function CartPage() {
             }
           }
           setPurchasedFiles(files);
-          setPurchasedBonuses(
-            Array.isArray(result.bonuses)
-              ? result.bonuses.filter(
-                  (bonus: unknown): bonus is string =>
-                    typeof bonus === "string",
-                )
-              : [],
-          );
           clear();
           window.localStorage.removeItem(PENDING_PAYMENT_KEY);
           setMessage(emailMessage);
@@ -177,7 +164,7 @@ export default function CartPage() {
           </h2>
           <p>
             {purchasedFiles.length
-              ? `Vos fichiers sont débloqués ci-dessous.${purchasedBonuses.length ? ` Bonus inclus : ${purchasedBonuses.join(" et ")}.` : ""}`
+              ? "Vos fichiers sont débloqués ci-dessous."
               : "Ajoutez un article pour continuer."}
           </p>
 
@@ -203,13 +190,6 @@ export default function CartPage() {
               <h2>Votre sélection ({items.reduce((s, i) => s + i.quantity, 0)})</h2>
             </div>
 
-            {orderBonuses.length > 0 && (
-              <div className="cart-bonus-notice">
-                <i className="fa-solid fa-gift"></i>
-                <span>Bonus inclus : {orderBonuses.join(" et ")}</span>
-              </div>
-            )}
-
             <div className="cart-items-list">
               {items.map((item) => {
                 const product = getItemProduct(item.productId);
@@ -219,7 +199,7 @@ export default function CartPage() {
                     <div className="cart-item-main">
                       <h3 className="cart-item-title">{product.name}</h3>
                       <span className="cart-item-meta">
-                        {formatPrice(product.price)} · Licence à vie
+                        {formatPrice(product.price)} · {product.deviceType}
                       </span>
                     </div>
 

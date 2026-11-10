@@ -3,7 +3,7 @@
 interface ProductBox3DProps {
   title: string;
   subtitle?: string;
-  variant?: "capcut" | "moviebox" | "duo" | "spotify" | "duolingo" | "canva";
+  variant?: "capcut" | "photoshop" | "premiere" | "sound-effects";
   badge?: string;
   size?: "sm" | "md" | "lg";
 }
@@ -25,45 +25,29 @@ export default function ProductBox3D({
       logoText: "CapCut",
       edition: "PRO VERSION",
     },
-    moviebox: {
-      primary: "#0E1A38",
+    photoshop: {
+      primary: "#101D3A",
+      accent: "#31A8FF",
+      spineColor: "#091329",
+      icon: "fa-image",
+      logoText: "Photoshop",
+      edition: "CREATIVE TOOLS",
+    },
+    premiere: {
+      primary: "#21153F",
+      accent: "#9999FF",
+      spineColor: "#160E2B",
+      icon: "fa-film",
+      logoText: "Premiere Pro",
+      edition: "VIDEO EDITING",
+    },
+    "sound-effects": {
+      primary: "#30200E",
       accent: "#F86011",
-      spineColor: "#080F22",
-      icon: "fa-play",
-      logoText: "MovieBox",
-      edition: "VIP PASS",
-    },
-    duo: {
-      primary: "#0A2A1E",
-      accent: "#F86011",
-      spineColor: "#061811",
-      icon: "fa-layer-group",
-      logoText: "Pack Créateur",
-      edition: "ULTIMATE DUO",
-    },
-    spotify: {
-      primary: "#0A2A1E",
-      accent: "#1ED760",
-      spineColor: "#05160E",
-      icon: "fa-spotify",
-      logoText: "Spotify",
-      edition: "PREMIUM",
-    },
-    duolingo: {
-      primary: "#143A2A",
-      accent: "#58CC02",
-      spineColor: "#0D251B",
-      icon: "fa-language",
-      logoText: "Duolingo",
-      edition: "SUPER PASS",
-    },
-    canva: {
-      primary: "#0B2533",
-      accent: "#00C4CC",
-      spineColor: "#061720",
-      icon: "fa-wand-magic-sparkles",
-      logoText: "Canva",
-      edition: "PRO 1 AN",
+      spineColor: "#201408",
+      icon: "fa-music",
+      logoText: "SFX",
+      edition: "SOUND EFFECTS",
     },
   };
 
@@ -104,20 +88,16 @@ export default function ProductBox3D({
             {/* Top brand header */}
             <div className="box3d-header">
               <div className="box3d-brand">
-                <i
-                  className={`fa-solid ${theme.icon === "fa-spotify" ? "fa-brands fa-spotify" : theme.icon}`}
-                ></i>
+                <i className={`fa-solid ${theme.icon}`}></i>
                 <span>{theme.logoText}</span>
               </div>
-              <span className="box3d-auth-pill">OFFICIEL</span>
+              <span className="box3d-auth-pill">CRÉATIF</span>
             </div>
 
             {/* Center Visual Art */}
             <div className="box3d-center">
               <div className="box3d-orb">
-                <i
-                  className={`fa-solid ${theme.icon === "fa-spotify" ? "fa-brands fa-spotify" : theme.icon}`}
-                ></i>
+                <i className={`fa-solid ${theme.icon}`}></i>
               </div>
               <h4 className="box3d-title">{title}</h4>
               <p className="box3d-sub">{subtitle}</p>

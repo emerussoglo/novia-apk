@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CartProvider } from "@/components/CartProvider";
+import ScrollRevealObserver from "@/components/ScrollRevealObserver";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NovaStudio — Licences Logicielles & Abonnements Premium",
+  title: "NovaStudio — Outils de création numérique",
   description:
-    "Boutique officielle de licences à vie et abonnements premium : CapCut Pro, MovieBox Pro, Pack Duo Créateur. Activation immédiate 24/7 et assistance garantie.",
+    "Découvrez CapCut Pro pour téléphone et ordinateur, Adobe Photoshop, Premiere Pro et des effets sonores pour le montage vidéo.",
 };
 
 export default function RootLayout({
@@ -31,6 +32,7 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/img/image.png" type="image/x-icon" />
       </head>
       <body>
+        <ScrollRevealObserver />
         <CartProvider>
           <Navbar />
           <main className="main-content">{children}</main>

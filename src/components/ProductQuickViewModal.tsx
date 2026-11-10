@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Product } from "@/lib/products";
+import type { Product } from "@/lib/products";
 import { useCart } from "@/components/CartProvider";
 import { useRouter } from "next/navigation";
 import ProductBox3D from "@/components/ProductBox3D";
+import { useDeliveryAvailability } from "@/hooks/useDeliveryAvailability";
 
 interface ProductQuickViewModalProps {
   product: Product | null;
@@ -16,13 +17,15 @@ export default function ProductQuickViewModal({
   onClose,
 }: ProductQuickViewModalProps) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedVersion, setSelectedVersion] = useState("nouveau");
   const { addItem } = useCart();
   const router = useRouter();
+  const { availableProducts, isLoading, error } = useDeliveryAvailability();
 
   if (!product) return null;
+  const isAvailable = availableProducts[product.id] === true;
 
   const handleAddToCart = () => {
+    if (!isAvailable) return;
     for (let i = 0; i < quantity; i++) {
       addItem(product.id);
     }
@@ -30,18 +33,12 @@ export default function ProductQuickViewModal({
   };
 
   const handleBuyNow = () => {
+    if (!isAvailable) return;
     for (let i = 0; i < quantity; i++) {
       addItem(product.id);
     }
     router.push("/panier");
   };
-
-  const boxVariant =
-    product.id === "capcut-pro"
-      ? "capcut"
-      : product.id === "moviebox-pro"
-        ? "moviebox"
-        : "duo";
 
   return (
     <div className="exact-modal-overlay" onClick={onClose}>
@@ -65,10 +62,10 @@ export default function ProductQuickViewModal({
           <div className="exact-pdp-visual">
             <ProductBox3D
               title={product.name.split("—")[0]}
-              subtitle="Licence Officielle"
-              variant={boxVariant}
+              subtitle={product.badge}
+              variant={product.visualVariant}
               size="lg"
-              badge={product.discount}
+              badge={product.badge}
             />
           </div>
 
@@ -97,32 +94,12 @@ export default function ProductQuickViewModal({
             {/* Product Title */}
             <h1 className="exact-pdp-title">{product.name}</h1>
 
-            {/* Price Row: Current (Bold) + Strike + Green Discount Badge */}
             <div className="exact-pdp-price-row">
               <span className="exact-pdp-price">
                 {product.price.toLocaleString("fr-FR")} FCFA
               </span>
-              <span className="exact-pdp-strike">
-                {product.originalPrice.toLocaleString("fr-FR")} FCFA
-              </span>
-              <span className="exact-pdp-discount">{product.discount}</span>
             </div>
-
-            {/* Version Dropdown */}
-            <div className="exact-pdp-group">
-              <label className="exact-pdp-label">Version</label>
-              <div className="exact-select-box">
-                <select
-                  value={selectedVersion}
-                  onChange={(e) => setSelectedVersion(e.target.value)}
-                  className="exact-pdp-select"
-                >
-                  <option value="nouveau">Nouveau compte / Clé active</option>
-                  <option value="renouvellement">Renouvellement immédiat</option>
-                </select>
-                <i className="fa-solid fa-chevron-down exact-select-arrow"></i>
-              </div>
-            </div>
+            <p className="exact-pdp-description">{product.description}</p>
 
             {/* Quantity Stepper + Ajouter + PayPal/Commander (Exact Screenshot 8) */}
             <div className="exact-pdp-actions">
@@ -146,18 +123,34 @@ export default function ProductQuickViewModal({
                 type="button"
                 onClick={handleAddToCart}
                 className="exact-pdp-btn-add"
+                disabled={!isAvailable}
               >
-                Ajouter
+                {isLoading
+                  ? "Vérification..."
+                  : isAvailable
+                    ? "Ajouter"
+                    : "Indisponible"}
               </button>
 
               <button
                 type="button"
                 onClick={handleBuyNow}
                 className="exact-pdp-btn-pay"
+                disabled={!isAvailable}
               >
-                Commander
+                {isLoading
+                  ? "Vérification..."
+                  : isAvailable
+                    ? "Commander"
+                    : "Indisponible"}
               </button>
             </div>
+            {!isAvailable && !isLoading && (
+              <p className="exact-pdp-availability">
+                {error ||
+                  "Ce produit sera disponible dès que son fichier de livraison sera prêt."}
+              </p>
+            )}
 
             {/* 3 Reassurance Bullets (Exact Screenshot 8) */}
             <div className="exact-pdp-trust-list">

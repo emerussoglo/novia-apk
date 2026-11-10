@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
-
 export default function Hero() {
   return (
     <section className="hero-section">
@@ -80,14 +78,13 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Badge flottant bas : bonus du pack */}
             <div className="floating-card bonus-card">
               <div className="bonus-apps-icon">
-                <i className="fa-solid fa-gift"></i>
+                <i className="fa-solid fa-wand-magic-sparkles"></i>
               </div>
               <div className="bonus-info">
-                <span className="bonus-label">Bonus avec les deux offres</span>
-                <span className="bonus-title">WPS Office + InShot</span>
+                <span className="bonus-label">Outils de création</span>
+                <span className="bonus-title">Vidéo, image, audio</span>
               </div>
             </div>
           </div>

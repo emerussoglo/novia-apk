@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="exact-footer-col">
             <span className="exact-footer-brand">NovaStudio</span>
             <p className="exact-footer-desc">
-              Licences officielles à vie et abonnements numériques vérifiés.
+              Des outils numériques pour la création vidéo, image et audio.
             </p>
             <a
               href="https://wa.me/2290166935805"
@@ -26,13 +26,19 @@ export default function Footer() {
             <h4 className="exact-footer-heading">Produits</h4>
             <ul className="exact-footer-links">
               <li>
-                <Link href="/produits?item=capcut-pro">CapCut Pro</Link>
+                <Link href="/produits?item=capcut-pro">CapCut Pro téléphone</Link>
               </li>
               <li>
-                <Link href="/produits?item=moviebox-pro">MovieBox Pro</Link>
+                <Link href="/produits?item=capcut-pc">CapCut Pro ordinateur</Link>
               </li>
               <li>
-                <Link href="/produits?item=pack-duo">Pack Duo VIP</Link>
+                <Link href="/produits?item=photoshop">Adobe Photoshop</Link>
+              </li>
+              <li>
+                <Link href="/produits?item=premiere-pro">Premiere Pro</Link>
+              </li>
+              <li>
+                <Link href="/produits?item=sfx">Sound Effects (SFX)</Link>
               </li>
             </ul>
           </div>

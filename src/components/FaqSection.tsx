@@ -19,8 +19,8 @@ export default function FaqSection() {
       answer: "Oui, un achat unique sans abonnement récurrent ni frais cachés.",
     },
     {
-      question: "Sur quels appareils fonctionne l'accès ?",
-      answer: "Smartphones et tablettes Android et iOS.",
+      question:       "Comment choisir la bonne version de CapCut ?",
+      answer: "Choisissez l’offre téléphone ou ordinateur selon votre appareil.",
     },
     {
       question: "Que faire en cas de difficulté ?",
@@ -29,7 +29,7 @@ export default function FaqSection() {
   ];
 
   return (
-    <section className="exact-faq-section" id="faq">
+    <section className="exact-faq-section scroll-reveal" id="faq">
       <div className="exact-faq-container">
         <h2 className="exact-faq-heading">Questions fréquentes</h2>
 

@@ -3,32 +3,47 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
 interface BannerSlide {
   id: string;
   image: string;
   alt: string;
   link: string;
+  title: string;
+  price: string;
 }
 
 const bannerSlides: BannerSlide[] = [
   {
-    id: "banner-1",  
+    id: "capcut-phone",
     image: "/img/banners/capcut.png",
-    alt: "CapCut Pro - Plus d'effets, sans filigrane",
+    alt: "CapCut Pro pour téléphone et ordinateur",
     link: "/produits?item=capcut-pro",
+    title: "CapCut Pro",
+    price: "Téléphone · 3 000 FCFA",
   },
   {
-    id: "banner-2",
-    image: "/img/banners/photoshop.png",
-    alt: "MovieBox Pro - Films & Séries 4K sans pub",
-    link: "/produits?item=moviebox-pro",
+    id: "capcut-computer",
+    image: "/img/banners/capcut.png",
+    alt: "CapCut Pro pour ordinateur",
+    link: "/produits?item=capcut-pc",
+    title: "CapCut Pro",
+    price: "Ordinateur · 3 000 FCFA",
   },
   {
-    id: "banner-3",
+    id: "photoshop",
     image: "/img/banners/photoshop.png",
-    alt: "Pack Créateur Duo - CapCut + MovieBox + 2 Bonus",
-    link: "/produits?item=pack-duo",
+    alt: "Adobe Photoshop",
+    link: "/produits?item=photoshop",
+    title: "Adobe Photoshop",
+    price: "3 000 FCFA",
+  },
+  {
+    id: "premiere-pro",
+    image: "/img/banners/premiere.png",
+    alt: "Adobe Premiere Pro",
+    link: "/produits?item=premiere-pro",
+    title: "Adobe Premiere Pro",
+    price: "3 000 FCFA",
   },
 ];
 
@@ -70,7 +85,7 @@ export default function HeroSlider() {
 
   return (
     <div
-      className="hero-image-slider-wrapper"
+      className="hero-image-slider-wrapper scroll-reveal"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -86,12 +101,19 @@ export default function HeroSlider() {
               aria-hidden={!isActive}
             >
               <Link href={slide.link} className="hero-banner-link">
-                <img
+                <Image
                   src={slide.image}
                   alt={slide.alt}
+                  fill
+                  sizes="100vw"
                   className="hero-banner-img"
                   loading={idx === 0 ? "eager" : "lazy"}
+                  fetchPriority={idx === 0 ? "high" : "auto"}
                 />
+                <span className="hero-banner-caption">
+                  <strong>{slide.title}</strong>
+                  <span>{slide.price}</span>
+                </span>
               </Link>
             </div>
           );

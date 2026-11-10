@@ -1,60 +1,63 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { products, Product } from "@/lib/products";
+import { products, type Product } from "@/lib/products";
 import { useCart } from "@/components/CartProvider";
 import ProductBox3D from "@/components/ProductBox3D";
 import ProductQuickViewModal from "@/components/ProductQuickViewModal";
+import { useDeliveryAvailability } from "@/hooks/useDeliveryAvailability";
 
 export default function ProductsSection() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
+  const { availableProducts, isLoading, error } = useDeliveryAvailability();
 
   const handleAdd = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
+    if (!availableProducts[id]) return;
     addItem(id);
     setAddedId(id);
     window.setTimeout(() => setAddedId(null), 1500);
   };
 
-  const getVariant = (id: string): "capcut" | "moviebox" | "duo" => {
-    if (id === "capcut-pro") return "capcut";
-    if (id === "moviebox-pro") return "moviebox";
-    return "duo";
-  };
-
   return (
-    <section className="exact-nouveautes-section">
+    <section className="exact-nouveautes-section scroll-reveal">
       <div className="exact-nouveautes-container">
-        <h2 className="exact-nouveautes-heading">Nouveautés</h2>
+        <h2 className="exact-nouveautes-heading">Nos outils créatifs</h2>
+        {error && (
+          <p role="status" className="exact-product-availability-error">
+            {error} Les achats restent désactivés tant que la disponibilité ne
+            peut pas être vérifiée.
+          </p>
+        )}
 
         <div className="exact-nouveautes-row">
           {products.map((product) => {
             const isAdded = addedId === product.id;
+            const isAvailable = availableProducts[product.id] === true;
             return (
               <div
                 key={product.id}
-                className="exact-product-card"
+                className="exact-product-card scroll-reveal"
                 onClick={() => setSelectedProduct(product)}
               >
-                {/* Visual Soft Grey Container */}
                 <div className="exact-product-img-box">
                   <ProductBox3D
-                    title={product.name.split("—")[0]}
-                    subtitle="Licence à vie"
-                    variant={getVariant(product.id)}
+                    title={product.name}
+                    subtitle={product.badge}
+                    variant={product.visualVariant}
                     size="md"
-                    badge={product.discount}
+                    badge={product.badge}
                   />
                 </div>
 
-                {/* Title */}
                 <h3 className="exact-product-title">{product.name}</h3>
+                <p className="exact-product-description">
+                  {product.description}
+                </p>
 
-                {/* Price Row: Tag + Price + Old Price + Discount */}
                 <div className="exact-product-price-row">
                   <div className="exact-price-lead">
                     <i className="fa-solid fa-tag"></i>
@@ -62,19 +65,24 @@ export default function ProductsSection() {
                       {product.price.toLocaleString("fr-FR")} FCFA
                     </span>
                   </div>
-                  <span className="exact-price-old">
-                    {product.originalPrice.toLocaleString("fr-FR")} FCFA
+                  <span className="exact-product-device">
+                    {product.deviceType}
                   </span>
-                  <span className="exact-price-badge">{product.discount}</span>
                 </div>
 
-                {/* Pill Button "Ajouter" */}
                 <button
                   type="button"
                   onClick={(e) => handleAdd(product.id, e)}
                   className={`exact-product-add-btn ${isAdded ? "added" : ""}`}
+                  disabled={isLoading || !isAvailable}
                 >
-                  {isAdded ? "Ajouté" : "Ajouter"}
+                  {isAdded
+                    ? "Ajouté"
+                    : isLoading
+                      ? "Vérification..."
+                      : isAvailable
+                        ? "Ajouter au panier"
+                        : "Bientôt disponible"}
                 </button>
               </div>
             );

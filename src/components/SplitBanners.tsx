@@ -6,34 +6,32 @@ export default function SplitBanners() {
   const { addItem } = useCart();
 
   return (
-    <section className="exact-split-section">
+    <section className="exact-split-section scroll-reveal">
       <div className="exact-split-grid">
-        {/* Banner 1 */}
         <div className="exact-split-card">
-          <div className="exact-split-img split-img-office"></div>
+          <div className="exact-split-img split-img-photoshop"></div>
           <div className="exact-split-content exact-split-green">
-            <h3>Travaillez mieux, créez plus !</h3>
+            <h3>Retouchez et créez avec Photoshop.</h3>
             <button
               type="button"
-              onClick={() => addItem("capcut-pro")}
+              onClick={() => addItem("photoshop")}
               className="exact-split-pill-btn"
             >
-              Découvrir CapCut
+              Découvrir Photoshop
             </button>
           </div>
         </div>
 
-        {/* Banner 2 */}
         <div className="exact-split-card">
-          <div className="exact-split-img split-img-windows"></div>
+          <div className="exact-split-img split-img-premiere"></div>
           <div className="exact-split-content exact-split-orange">
-            <h3>Le divertissement le plus fluide qui soit !</h3>
+            <h3>Réalisez vos montages avec Premiere Pro.</h3>
             <button
               type="button"
-              onClick={() => addItem("moviebox-pro")}
+              onClick={() => addItem("premiere-pro")}
               className="exact-split-pill-btn"
             >
-              Acheter MovieBox
+              Découvrir Premiere Pro
             </button>
           </div>
         </div>

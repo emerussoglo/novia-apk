@@ -99,10 +99,16 @@ export async function POST(request: Request) {
       file,
       url: new URL(file, siteUrl).toString(),
     }));
+    if (downloadLinks.length === 0) {
+      return NextResponse.json(
+        { error: "Aucun fichier de livraison n’est associé à la commande." },
+        { status: 502 },
+      );
+    }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
     const from =
-      process.env.RESEND_FROM_EMAIL ?? "Prime Digital <onboarding@resend.dev>";
+      process.env.RESEND_FROM_EMAIL ?? "NovaStudio <onboarding@resend.dev>";
     const productSummary = purchasedProducts
       .map(
         ({ product, quantity }) =>
@@ -118,27 +124,20 @@ export async function POST(request: Request) {
     const textDownloads = downloadLinks
       .map(({ file, url }) => `Télécharger ${file.split("/").pop()}: ${url}`)
       .join("\n");
-    const bonusText = delivery.bonuses.length
-      ? `Bonus inclus : ${delivery.bonuses.join(" et ")}.`
-      : "";
-    const bonusHtml = delivery.bonuses.length
-      ? `<p>Bonus du pack : <strong>${delivery.bonuses.map(escapeHtml).join(" et ")}</strong>.</p>`
-      : "";
     const result = await resend.emails.send({
       from,
       to: email,
-      subject: "Ton achat Prime Digital est confirmé",
-      text: `Bonjour ${customerName},\n\nMerci pour ton achat. Voici les fichiers de ta commande :\n\n${textDownloads}\n\n${bonusText}\nPrime Digital`,
+      subject: "Votre achat NovaStudio est confirmé",
+      text: `Bonjour ${customerName},\n\nMerci pour votre achat. Voici les fichiers de votre commande :\n\n${textDownloads}\n\nNovaStudio`,
       html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;color:#172033;line-height:1.6;">
-        <h1 style="color:#2563eb;">Merci pour ton achat, ${escapeHtml(customerName)} !</h1>
-        <p>Ton paiement a été confirmé.</p>
-        <p>Ta commande :</p>
+        <h1 style="color:#2563eb;">Merci pour votre achat, ${escapeHtml(customerName)} !</h1>
+        <p>Votre paiement a été confirmé.</p>
+        <p>Votre commande :</p>
         <ul>${productSummary}</ul>
-        <p>Télécharge le fichier qui correspond à ton achat :</p>
+        <p>Téléchargez les fichiers qui correspondent à votre achat :</p>
         <ul>${downloadList}</ul>
-        ${bonusHtml}
-        <p>Conserve cet e-mail pour retrouver tes téléchargements.</p>
-        <p style="color:#64748b;">Prime Digital</p>
+        <p>Conservez cet e-mail pour retrouver vos téléchargements.</p>
+        <p style="color:#64748b;">NovaStudio</p>
       </div>`,
     });
 

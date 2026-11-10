@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useMemo, useEffect, Suspense } from "react";
+import { useState, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { products, Product } from "@/lib/products";
+import { products, type Product } from "@/lib/products";
 import { useCart } from "@/components/CartProvider";
 import ProductBox3D from "@/components/ProductBox3D";
 import ProductQuickViewModal from "@/components/ProductQuickViewModal";
+import { useDeliveryAvailability } from "@/hooks/useDeliveryAvailability";
 
 function ProductsContent() {
   const searchParams = useSearchParams();
@@ -14,22 +15,24 @@ function ProductsContent() {
 
   const [selectedCategory, setSelectedCategory] = useState("Tous");
   const [searchQuery, setSearchQuery] = useState(initialSearch);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [manualSelection, setManualSelection] = useState<{
+    product: Product;
+    itemParam: string;
+  } | null>(null);
+  const [dismissedItem, setDismissedItem] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useCart();
-
-  useEffect(() => {
-    if (initialItem) {
-      const match = products.find((p) => p.id === initialItem);
-      if (match) setSelectedProduct(match);
-    }
-  }, [initialItem]);
+  const { availableProducts, isLoading, error } = useDeliveryAvailability();
+  const selectedProduct =
+    manualSelection?.itemParam === initialItem
+      ? manualSelection.product
+      : dismissedItem === initialItem
+        ? null
+        : products.find((product) => product.id === initialItem) ?? null;
 
   const categories = [
     "Tous",
-    "Vidéo & Montage",
-    "Streaming & Médias",
-    "Bundles & Packs",
+    ...Array.from(new Set(products.map((product) => product.category))),
   ];
 
   const filteredProducts = useMemo(() => {
@@ -45,33 +48,27 @@ function ProductsContent() {
 
   const handleAdd = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!availableProducts[id]) return;
     addItem(id);
     setAddedId(id);
     window.setTimeout(() => setAddedId(null), 1500);
   };
 
-  const getVariant = (id: string): "capcut" | "moviebox" | "duo" => {
-    if (id === "capcut-pro") return "capcut";
-    if (id === "moviebox-pro") return "moviebox";
-    return "duo";
-  };
-
   return (
     <div className="exact-catalog-container">
-      {/* Simple Page Header */}
-      <div className="exact-catalog-header">
-        <h1 className="exact-catalog-title">Nos Licences & Abonnements</h1>
+      <div className="exact-catalog-header scroll-reveal">
+        <h1 className="exact-catalog-title">Nos outils créatifs</h1>
         <p className="exact-catalog-subtitle">
-          Sélectionnez votre produit et profitez d&apos;une activation immédiate par email.
+          CapCut pour téléphone et ordinateur, Photoshop, Premiere Pro et effets
+          sonores.
         </p>
 
-        {/* Search + Category Tabs */}
         <div className="exact-catalog-controls">
           <div className="exact-search-input-wrap">
             <i className="fa-solid fa-magnifying-glass"></i>
             <input
               type="text"
-              placeholder="Rechercher (CapCut, MovieBox...)"
+              placeholder="Rechercher (CapCut, Photoshop, Premiere...)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -101,27 +98,28 @@ function ProductsContent() {
         </div>
       </div>
 
-      {/* Products Grid (Matching Screenshot 3) */}
       <div className="exact-nouveautes-row">
         {filteredProducts.map((product) => {
           const isAdded = addedId === product.id;
+          const isAvailable = availableProducts[product.id] === true;
           return (
             <div
               key={product.id}
-              className="exact-product-card"
-              onClick={() => setSelectedProduct(product)}
+              className="exact-product-card scroll-reveal"
+              onClick={() => setManualSelection({ product, itemParam: initialItem })}
             >
               <div className="exact-product-img-box">
                 <ProductBox3D
-                  title={product.name.split("—")[0]}
-                  subtitle="Licence à vie"
-                  variant={getVariant(product.id)}
+                  title={product.name}
+                  subtitle={product.badge}
+                  variant={product.visualVariant}
                   size="md"
-                  badge={product.discount}
+                  badge={product.badge}
                 />
               </div>
 
               <h3 className="exact-product-title">{product.name}</h3>
+              <p className="exact-product-description">{product.description}</p>
 
               <div className="exact-product-price-row">
                 <div className="exact-price-lead">
@@ -130,27 +128,42 @@ function ProductsContent() {
                     {product.price.toLocaleString("fr-FR")} FCFA
                   </span>
                 </div>
-                <span className="exact-price-old">
-                  {product.originalPrice.toLocaleString("fr-FR")} FCFA
+                <span className="exact-product-device">
+                {product.deviceType}
                 </span>
-                <span className="exact-price-badge">{product.discount}</span>
               </div>
 
               <button
                 type="button"
                 onClick={(e) => handleAdd(product.id, e)}
                 className={`exact-product-add-btn ${isAdded ? "added" : ""}`}
+                disabled={isLoading || !isAvailable}
               >
-                {isAdded ? "Ajouté" : "Ajouter"}
+                {isAdded
+                ? "Ajouté"
+                : isLoading
+                  ? "Vérification..."
+                  : isAvailable
+                    ? "Ajouter au panier"
+                    : "Bientôt disponible"}
               </button>
             </div>
           );
         })}
       </div>
+      {error && (
+        <p role="status" className="exact-product-availability-error">
+          {error} Les achats restent désactivés tant que la disponibilité ne
+          peut pas être vérifiée.
+        </p>
+      )}
 
       <ProductQuickViewModal
         product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
+        onClose={() => {
+          setManualSelection(null);
+          setDismissedItem(initialItem);
+        }}
       />
     </div>
   );

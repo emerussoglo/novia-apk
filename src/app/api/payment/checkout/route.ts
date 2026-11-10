@@ -4,16 +4,40 @@ import { sasPayRequest } from "@/lib/saspay";
 
 type RequestItem = { productId: string; quantity: number };
 
+function isRequestItem(item: unknown): item is RequestItem {
+  if (!item || typeof item !== "object") return false;
+  const candidate = item as Record<string, unknown>;
+  return (
+    typeof candidate.productId === "string" &&
+    typeof candidate.quantity === "number" &&
+    Number.isInteger(candidate.quantity)
+  );
+}
+
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const items = body?.items as RequestItem[];
-    const name = typeof body.name === "string" ? body.name.trim() : "";
-    const email = typeof body.email === "string" ? body.email.trim() : "";
+    const body: unknown = await request.json();
+    if (!body || typeof body !== "object") {
+      return NextResponse.json(
+        { error: "Informations de commande invalides." },
+        { status: 400 },
+      );
+    }
+    const requestBody = body as {
+      items?: unknown;
+      name?: unknown;
+      email?: unknown;
+    };
+    const items = requestBody.items;
+    const name =
+      typeof requestBody.name === "string" ? requestBody.name.trim() : "";
+    const email =
+      typeof requestBody.email === "string" ? requestBody.email.trim() : "";
 
     if (
       !Array.isArray(items) ||
       items.length === 0 ||
+      !items.every(isRequestItem) ||
       !name ||
       !/^\S+@\S+\.\S+$/.test(email)
     ) {
@@ -23,20 +47,43 @@ export async function POST(request: Request) {
       );
     }
 
-    const safeItems = items.map((item) => {
-      if (!item || typeof item.productId !== "string")
-        throw new Error("Produit ou quantité invalide.");
+    const requestItems = items.filter(isRequestItem);
+    if (requestItems.length !== items.length) {
+      return NextResponse.json(
+        { error: "Produit ou quantité invalide." },
+        { status: 400 },
+      );
+    }
+
+    const safeItems: Array<{
+      productId: string;
+      name: string;
+      quantity: number;
+      unitPrice: number;
+    }> = [];
+    for (const item of requestItems) {
       const product = getProduct(item.productId);
-      const quantity = Number.isInteger(item.quantity) ? item.quantity : 0;
-      if (!product || quantity < 1 || quantity > 20)
-        throw new Error("Produit ou quantité invalide.");
-      return {
+      if (!product || item.quantity < 1 || item.quantity > 20) {
+        return NextResponse.json(
+          { error: "Produit ou quantité invalide." },
+          { status: 400 },
+        );
+      }
+      if (!product.availableForPurchase) {
+        return NextResponse.json(
+          {
+            error: `Le fichier de livraison de ${product.name} n’est pas encore disponible.`,
+          },
+          { status: 409 },
+        );
+      }
+      safeItems.push({
         productId: product.id,
         name: product.name,
-        quantity,
+        quantity: item.quantity,
         unitPrice: product.price,
-      };
-    });
+      });
+    }
     const amount = safeItems.reduce(
       (sum, item) => sum + item.unitPrice * item.quantity,
       0,
@@ -50,7 +97,7 @@ export async function POST(request: Request) {
         amount: amount.toFixed(2),
         currency: "XOF",
         country: "BJ",
-        description: `Commande Prime Digital - ${safeItems.map((item) => item.name).join(", ")}`,
+        description: `Commande NovaStudio - ${safeItems.map((item) => item.name).join(", ")}`,
         customer_email: email,
         customer_name: name,
         return_url: `${siteUrl.replace(/\/$/, "")}/panier`,

@@ -28,7 +28,7 @@ export default function TrustBar() {
   ];
 
   return (
-    <section className="exact-trust-bar-section">
+    <section className="exact-trust-bar-section scroll-reveal">
       <div className="exact-trust-container">
         {items.map((item, index) => (
           <div key={index} className="exact-trust-item">

@@ -24,7 +24,7 @@ export async function GET(
       transaction = verified?.data ?? verified;
     }
     const verified = transaction?.status === "SUCCESS";
-    let delivery = { files: [] as string[], bonuses: [] as string[] };
+    let delivery = { files: [] as string[] };
     if (verified) {
       const sessionItems = session.metadata?.items;
       if (!Array.isArray(sessionItems) || sessionItems.length === 0) {
@@ -51,13 +51,18 @@ export async function GET(
         productIds.push(item.productId);
       }
       delivery = getOrderDelivery(productIds);
+      if (delivery.files.length === 0) {
+        return NextResponse.json(
+          { error: "Aucun fichier de livraison n’est associé à la commande." },
+          { status: 502 },
+        );
+      }
     }
     return NextResponse.json({
       status: session.status,
       verified,
       transaction,
       downloadFiles: delivery.files,
-      bonuses: delivery.bonuses,
       customerEmail: session.customer_email ?? "",
       customerName: session.customer_name ?? "Client",
     });

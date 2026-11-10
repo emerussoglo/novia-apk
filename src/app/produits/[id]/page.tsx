@@ -1,11 +1,11 @@
 "use client";
 
 import { use, useState } from "react";
-import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { getProduct } from "@/lib/products";
 import { useCart } from "@/components/CartProvider";
 import ProductBox3D from "@/components/ProductBox3D";
+import { useDeliveryAvailability } from "@/hooks/useDeliveryAvailability";
 
 export default function ProductDetailPage({
   params,
@@ -17,14 +17,16 @@ export default function ProductDetailPage({
   const router = useRouter();
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const [selectedVersion, setSelectedVersion] = useState("nouveau");
   const [added, setAdded] = useState(false);
+  const { availableProducts, isLoading, error } = useDeliveryAvailability();
 
   if (!product) {
     notFound();
   }
+  const isAvailable = availableProducts[product.id] === true;
 
   const handleAddToCart = () => {
+    if (!isAvailable) return;
     for (let i = 0; i < quantity; i++) {
       addItem(product.id);
     }
@@ -33,18 +35,12 @@ export default function ProductDetailPage({
   };
 
   const handleBuyNow = () => {
+    if (!isAvailable) return;
     for (let i = 0; i < quantity; i++) {
       addItem(product.id);
     }
     router.push("/panier");
   };
-
-  const boxVariant =
-    product.id === "capcut-pro"
-      ? "capcut"
-      : product.id === "moviebox-pro"
-        ? "moviebox"
-        : "duo";
 
   return (
     <main className="exact-pdp-page-container">
@@ -54,10 +50,10 @@ export default function ProductDetailPage({
           <div className="exact-pdp-visual">
             <ProductBox3D
               title={product.name.split("—")[0]}
-              subtitle="Licence Officielle"
-              variant={boxVariant}
+              subtitle={product.badge}
+              variant={product.visualVariant}
               size="lg"
-              badge={product.discount}
+              badge={product.badge}
             />
           </div>
 
@@ -86,32 +82,12 @@ export default function ProductDetailPage({
             {/* Title */}
             <h1 className="exact-pdp-title">{product.name}</h1>
 
-            {/* Price Line */}
             <div className="exact-pdp-price-row">
               <span className="exact-pdp-price">
                 {product.price.toLocaleString("fr-FR")} FCFA
               </span>
-              <span className="exact-pdp-strike">
-                {product.originalPrice.toLocaleString("fr-FR")} FCFA
-              </span>
-              <span className="exact-pdp-discount">{product.discount}</span>
             </div>
-
-            {/* Version Dropdown */}
-            <div className="exact-pdp-group">
-              <label className="exact-pdp-label">Version</label>
-              <div className="exact-select-box">
-                <select
-                  value={selectedVersion}
-                  onChange={(e) => setSelectedVersion(e.target.value)}
-                  className="exact-pdp-select"
-                >
-                  <option value="nouveau">Nouveau compte / Clé active</option>
-                  <option value="renouvellement">Renouvellement immédiat</option>
-                </select>
-                <i className="fa-solid fa-chevron-down exact-select-arrow"></i>
-              </div>
-            </div>
+            <p className="exact-pdp-description">{product.description}</p>
 
             {/* Actions: Stepper + Ajouter + Commander */}
             <div className="exact-pdp-actions">
@@ -135,18 +111,36 @@ export default function ProductDetailPage({
                 type="button"
                 onClick={handleAddToCart}
                 className="exact-pdp-btn-add"
+                disabled={!isAvailable}
               >
-                {added ? "Ajouté !" : "Ajouter"}
+                {added
+                  ? "Ajouté !"
+                  : isLoading
+                    ? "Vérification..."
+                    : isAvailable
+                      ? "Ajouter"
+                      : "Bientôt disponible"}
               </button>
 
               <button
                 type="button"
                 onClick={handleBuyNow}
                 className="exact-pdp-btn-pay"
+                disabled={!isAvailable}
               >
-                Commander
+                {isLoading
+                  ? "Vérification..."
+                  : isAvailable
+                    ? "Commander"
+                    : "Bientôt disponible"}
               </button>
             </div>
+            {!isAvailable && !isLoading && (
+              <p className="exact-pdp-availability">
+                {error ||
+                  "Ce produit sera disponible dès que son fichier de livraison sera prêt."}
+              </p>
+            )}
 
             {/* 3 Trust items */}
             <div className="exact-pdp-trust-list">
