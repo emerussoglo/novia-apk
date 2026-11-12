@@ -66,14 +66,13 @@ export default function Footer() {
         {/* Bottom copyright row */}
         <div className="exact-footer-bottom">
           <p>© {new Date().getFullYear()} NovaStudio. Tous droits réservés.</p>
-          <div className="exact-footer-methods">
-            <span>MTN</span>
-            <span>Moov</span>
-            <span>Celtiis</span>
-            <span>Wave</span>
-            <span>Carte</span>
-          </div>
         </div>
+      </div>
+
+      {/* Effet filigrane géant de la plateforme en bas (Style de l'image) */}
+      <div className="footer-brand-watermark-wrapper">
+        <div className="footer-watermark-line"></div>
+        <div className="footer-huge-brand">NOVASTUDIO</div>
       </div>
     </footer>
   );

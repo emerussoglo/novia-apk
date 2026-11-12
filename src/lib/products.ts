@@ -101,7 +101,7 @@ export const products: Product[] = [
     ],
     mockupImage: "/img/mockup/sfx.png",
     downloadFile: "/img/sfx.txt",
-    availableForPurchase: false,
+    availableForPurchase: true,
     visualVariant: "sound-effects",
   },
 ];

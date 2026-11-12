@@ -31,7 +31,7 @@ const bannerSlides: BannerSlide[] = [
   },
   {
     id: "photoshop",
-    image: "/img/banners/photoshop.png",
+    image: "/img/banners/Photoshop1.png",
     alt: "Adobe Photoshop",
     link: "/produits/photoshop",
     title: "Adobe Photoshop",
