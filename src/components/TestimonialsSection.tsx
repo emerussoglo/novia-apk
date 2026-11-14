@@ -7,8 +7,6 @@ export default function TestimonialsSection() {
       <div className="proof-wall-inner">
         <h2 className="proof-wall-heading">Et voilà ce qu&apos;ils en disent.</h2>
 
-        
-
 
         <div className="proof-columns-layout">
           {/* COLONNE 1 : 2 captures empilées */}
