@@ -2615,3 +2615,111 @@ img {
     width: 300px;
   }
 }
+
+
+
+
+
+/* ==========================================================================
+   MUR DE TÉMOIGNAGES (Reproduction exacte du design dark)
+   ========================================================================== */
+.proof-wall-section {
+  background-color: #0a0a0a;
+  padding: 5.5rem 1.5rem;
+  color: #ffffff;
+}
+
+.proof-wall-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.proof-wall-heading {
+  text-align: center;
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 3.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+/* Grille à 3 colonnes */
+.proof-columns-layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* Empilement vertical dans chaque colonne */
+.proof-col-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Groupe image + légende en dessous */
+.proof-shot-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Encadré individuel de chaque capture */
+.proof-shot-box {
+  width: 100%;
+  background-color: #141414;
+  border: 1px solid #262626;
+  border-radius: 16px;
+  padding: 0.85rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.proof-shot-box:hover {
+  border-color: #404040;
+  transform: translateY(-2px);
+}
+
+.proof-shot-media {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  object-fit: cover;
+}
+
+/* Étiquette "MÊME MESSAGE · 1 SUR 2" */
+.proof-part-tag {
+  margin-top: 0.9rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #737373;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* --- Responsive Tablette & Mobile --- */
+@media (max-width: 960px) {
+  .proof-columns-layout {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .proof-wall-section {
+    padding: 4rem 1rem;
+  }
+
+  .proof-wall-heading {
+    font-size: 1.9rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .proof-columns-layout {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}

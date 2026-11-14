@@ -4,7 +4,7 @@ import ProductsSection from "@/components/ProductsSection";
 import SplitBanners from "@/components/SplitBanners";
 import FaqSection from "@/components/FaqSection";
 import CtaSection from "@/components/CtaSection";
-import TestimonialsScreenshots from "@/components/TestimonialsScreenshots";
+import TestimonialsSection from "@/components/TestimonialsSection"; // Le nouveau composant de captures WhatsApp
 import TestimonialsCards from "@/components/TestimonialsCards";
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
       <SplitBanners />
       <FaqSection />
       <CtaSection />
-      {/* <TestimonialsScreenshots />  */}
+      <TestimonialsSection /> {/* Affichage de la section de captures WhatsApp */}
       <TestimonialsCards /> 
     </>
   );
